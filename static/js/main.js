@@ -1,7 +1,10 @@
 import {boardsManager} from "./controller/boardsManager.js";
 
-function init() {
-    boardsManager.loadBoards();
+async function init() {
+    await boardsManager.loadBoards();
+    await boardsManager.renameBoard()
+    await boardsManager.saveBoardRename()
+
 }
 
 const createButton = document.getElementById("createButton");

@@ -26,9 +26,20 @@ export let boardsManager = {
         const boards = await dataHandler.getBoards();
         boards.forEach((board) => {
             domManager.addEventListener(
-                `.toggle-board-button[data-board-id="${board.id}"]`,
+                `.board[data-board-id="${board.id}"]`,
                 "click",
+                renameBoardHandler
+            )
+        })
+    },
 
+    saveBoardRename: async function () {
+        const boards = await dataHandler.getBoards();
+        boards.forEach((board) => {
+            domManager.addEventListener(
+                `.board-save-button[data-board-id="${board.id}"]`,
+                "click",
+                saveBoardRenameHandler
             )
         })
     }
@@ -39,7 +50,17 @@ function showHideButtonHandler(clickEvent) {
     cardsManager.loadCards(boardId);
 }
 
-function  renameBoardHandler (clickEvent) {
-    const boardId = clickEvent.target.dataset.boardId;
+function renameBoardHandler (clickEvent) {
+    const board = clickEvent.target
+    board.style.display = 'none'
+    board.parentElement.children[1].style.display = 'inline-block'
+    board.parentElement.children[2].style.display = 'inline-block'
+}
 
+function saveBoardRenameHandler (clickEvent) {
+    const board = clickEvent.target
+    board.style.display = 'none'
+    board.parentElement.children[0].innerHTML = board.parentElement.children[1].value
+    board.parentElement.children[0].style.display = 'inline-block'
+    board.parentElement.children[1].style.display = 'none'
 }

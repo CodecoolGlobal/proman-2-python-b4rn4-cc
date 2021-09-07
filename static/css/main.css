@@ -55,6 +55,17 @@ section.board-section{
     display: inline-block;
     font-size: 20px;
 }
+
+.board-rename-field{
+    margin: 13px;
+    display: none;
+    font-size: 20px;
+}
+
+.board-save-button{
+    display: none;
+}
+
 .board, .board-add, .board-toggle{
     display: inline-block;
 }
