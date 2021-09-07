@@ -28,6 +28,7 @@ def get_boards():
     return data_manager.execute_select(
         """
         SELECT * FROM boards
+        ORDER BY id
         ;
         """
     )
@@ -52,3 +53,11 @@ def create_board(board_name):
     INSERT INTO boards
     (title)
     VALUES (%(board_name)s)""", {"board_name": board_name})
+
+
+def update_board_title(board_name, board_id):
+    data_manager.execute_insert("""
+        UPDATE boards
+        SET title = %(board_name)s
+        WHERE id = %(board_id)s;
+    """, {"board_name": board_name, "board_id": board_id})

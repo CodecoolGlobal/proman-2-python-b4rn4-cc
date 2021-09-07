@@ -3,6 +3,10 @@ import {htmlFactory, htmlTemplates} from "../view/htmlFactory.js";
 import {domManager} from "../view/domManager.js";
 import {cardsManager} from "./cardsManager.js";
 
+const TITLE = 0;
+const INPUT = 1;
+const SAVE = 2;
+
 export let boardsManager = {
     loadBoards: async function () {
         const boards = await dataHandler.getBoards();
@@ -53,14 +57,17 @@ function showHideButtonHandler(clickEvent) {
 function renameBoardHandler (clickEvent) {
     const board = clickEvent.target
     board.style.display = 'none'
-    board.parentElement.children[1].style.display = 'inline-block'
-    board.parentElement.children[2].style.display = 'inline-block'
+    board.parentElement.children[INPUT].style.display = 'inline-block'
+    board.parentElement.children[SAVE].style.display = 'inline-block'
 }
 
 function saveBoardRenameHandler (clickEvent) {
     const board = clickEvent.target
     board.style.display = 'none'
-    board.parentElement.children[0].innerHTML = board.parentElement.children[1].value
-    board.parentElement.children[0].style.display = 'inline-block'
-    board.parentElement.children[1].style.display = 'none'
+    board.parentElement.children[TITLE].innerHTML = board.parentElement.children[1].value
+    const boardTitle = board.parentElement.children[TITLE].innerHTML
+    board.parentElement.children[TITLE].style.display = 'inline-block'
+    board.parentElement.children[INPUT].style.display = 'none'
+    const boardId = board.dataset.boardId;
+    dataHandler.updateBoardName(boardId, boardTitle);
 }

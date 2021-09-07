@@ -54,5 +54,12 @@ def create_boards():
     # return data
 
 
+@app.route('/api/boards/<int:board_id>/update', methods=['POST'])
+@json_response
+def update_board(board_id):
+    board_name = request.get_json()
+    queires.update_board_title(board_name, board_id)
+
+
 if __name__ == '__main__':
     main()
