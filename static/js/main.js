@@ -1,7 +1,10 @@
-import { boardsManager } from "./controller/boardsManager.js";
+import {boardsManager} from "./controller/boardsManager.js";
+import {displayRegModal} from "./view/domManager.js";
 
 function init() {
-  boardsManager.loadBoards();
+    boardsManager.loadBoards();
+    displayRegModal();
+
 }
 
 init();

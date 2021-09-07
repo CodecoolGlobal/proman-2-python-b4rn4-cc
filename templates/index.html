@@ -19,22 +19,29 @@
 </head>
 <body>
 <div id="myModal" class="modal">
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul class="flashes">
-                {% for message in messages %}
-                    <p style="color: #9C1A1C; padding-top: 20px; font-weight: bold">{{ message }}</p>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
-    <form action="/registration" , method="post">
-        <label class="login-label" for="user_name">User name</label>
-        <input class="login-input" type="text" name="user_name" id="user_name">
-        <label class="login-label" for="password">Password</label>
-        <input class="login-input" type="password" name="password" id="password">
-        <button class="primary" type="submit">CREATE</button>
-    </form>
+    <div class="modal-content">
+        <div class="regPlatform">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class="flashes">
+                        {% for message in messages %}
+                            <p style="color: #9C1A1C; padding-top: 20px; font-weight: bold">{{ message }}</p>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            <form action="/registration" , method="post">
+                <label class="login-label" for="user_name">User name</label>
+                <input class="login-input" type="text" name="user_name" id="user_name">
+                <label class="login-label" for="password">Password</label>
+                <input class="login-input" type="password" name="password" id="password">
+                <button class="primary" type="submit">CREATE</button>
+            </form>
+        </div>
+        <div>
+            <button class="close" id="close">&times;</button>
+        </div>
+    </div>
 </div>
 <div>
     <button id="regButton">Registration</button>
