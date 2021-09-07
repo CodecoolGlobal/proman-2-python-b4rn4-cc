@@ -3,6 +3,10 @@ import {htmlFactory, htmlTemplates} from "../view/htmlFactory.js";
 import {domManager} from "../view/domManager.js";
 import {cardsManager} from "./cardsManager.js";
 
+const TITLE = 0;
+const INPUT = 1;
+const SAVE = 2;
+
 export let boardsManager = {
     loadBoards: async function () {
         const boards = await dataHandler.getBoards();
@@ -17,12 +21,53 @@ export let boardsManager = {
             );
         }
     },
+
     createBoards: async function (boardTitle) {
         await dataHandler.createNewBoard(boardTitle);
+    },
+
+    renameBoard: async  function () {
+        const boards = await dataHandler.getBoards();
+        boards.forEach((board) => {
+            domManager.addEventListener(
+                `.board[data-board-id="${board.id}"]`,
+                "click",
+                renameBoardHandler
+            )
+        })
+    },
+
+    saveBoardRename: async function () {
+        const boards = await dataHandler.getBoards();
+        boards.forEach((board) => {
+            domManager.addEventListener(
+                `.board-save-button[data-board-id="${board.id}"]`,
+                "click",
+                saveBoardRenameHandler
+            )
+        })
     }
 };
 
 function showHideButtonHandler(clickEvent) {
     const boardId = clickEvent.target.dataset.boardId;
     cardsManager.loadCards(boardId);
+}
+
+function renameBoardHandler (clickEvent) {
+    const board = clickEvent.target
+    board.style.display = 'none'
+    board.parentElement.children[INPUT].style.display = 'inline-block'
+    board.parentElement.children[SAVE].style.display = 'inline-block'
+}
+
+function saveBoardRenameHandler (clickEvent) {
+    const board = clickEvent.target
+    board.style.display = 'none'
+    board.parentElement.children[TITLE].innerHTML = board.parentElement.children[1].value
+    const boardTitle = board.parentElement.children[TITLE].innerHTML
+    board.parentElement.children[TITLE].style.display = 'inline-block'
+    board.parentElement.children[INPUT].style.display = 'none'
+    const boardId = board.dataset.boardId;
+    dataHandler.updateBoardName(boardId, boardTitle);
 }
