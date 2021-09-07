@@ -1,4 +1,5 @@
 import data_manager
+import datetime
 
 
 def get_card_status(status_id):
@@ -54,3 +55,22 @@ def create_board(board_name):
     INSERT INTO boards
     (title)
     VALUES (%(board_name)s)""", {"board_name": board_name})
+
+
+def list_users():
+    users = data_manager.execute_select(
+        """SELECT *
+        FROM users"""
+    )
+    return users
+
+
+def new_user(user_name, password):
+    registration_time = datetime.datetime.now()
+    data_manager.execute_insert(
+        """INSERT INTO users (registration_time, user_name, password)
+        VALUES (%(registration_time)s, %(user_name)s, %(password)s)""",
+        variables={'registration_time': registration_time,
+                   'user_name': user_name,
+                   'password': password}
+    )

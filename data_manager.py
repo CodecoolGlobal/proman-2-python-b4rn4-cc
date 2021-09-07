@@ -1,6 +1,7 @@
 import os
 import psycopg2
 import psycopg2.extras
+import bcrypt
 
 
 def establish_connection(connection_data=None):
@@ -59,7 +60,17 @@ def execute_select(statement, variables=None, fetchall=True):
     return result_set
 
 
-def execute_insert(statement, variables):
+def execute_insert(statement, variables=None):
     with establish_connection() as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cursor:
-            cursor.execute(statement,variables)
+            cursor.execute(statement, variables)
+
+
+def hash_password(plain_text_password):
+    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_bytes.decode('utf-8')
+
+
+def verify_password(plain_text_password, hashed_password):
+    hashed_bytes_password = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
