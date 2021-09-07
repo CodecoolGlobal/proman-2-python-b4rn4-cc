@@ -1,6 +1,5 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request
 from dotenv import load_dotenv
-
 
 from util import json_response
 import mimetypes
@@ -9,6 +8,7 @@ import queires
 mimetypes.add_type('application/javascript', '.js')
 app = Flask(__name__)
 load_dotenv()
+
 
 @app.route("/")
 def index():
@@ -43,6 +43,15 @@ def main():
     # Serving the favicon
     with app.app_context():
         app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon/favicon.ico'))
+
+
+@app.route("/api/boards/create", methods=["POST"])
+@json_response
+def create_boards():
+    data = request.get_json()["boardTitle"]
+    print(data)
+    queires.create_board(data)
+    # return data
 
 
 if __name__ == '__main__':
