@@ -5,6 +5,7 @@ function init() {
     boardsManager.loadBoards();
     displayRegModal();
 
+
 }
 
 const createButton = document.getElementById("createButton");
