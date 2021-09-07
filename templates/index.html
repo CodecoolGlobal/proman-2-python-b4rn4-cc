@@ -21,6 +21,7 @@
 <div id="myModal" class="modal">
     <div class="modal-content">
         <div class="regPlatform">
+        <div id="regMessage">
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     <ul class="flashes">
@@ -30,6 +31,7 @@
                     </ul>
                 {% endif %}
             {% endwith %}
+        </div>
             <form action="/registration" method="post">
                 <label class="login-label" for="user_name">User name</label>
                 <input class="login-input" type="text" name="user_name" id="user_name">
@@ -45,6 +47,11 @@
 </div>
 <div>
     <button id="regButton">Registration</button>
+    {% if session["user"] %}
+        <a href="{{ url_for("logout") }}">
+            <button class="primary">LOGOUT</button>
+        </a>
+    {% endif %}
 </div>
 <div id="root"></div>
 </body>

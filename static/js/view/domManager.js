@@ -18,18 +18,22 @@ export let domManager = {
 };
 
 export let displayRegModal = function () {
+    let closeButton = document.getElementById('close');
+    let modal = document.getElementById("myModal");
     let regButton = document.getElementById("regButton");
+    let regMessage = document.getElementById("regMessage");
     regButton.addEventListener('click', function () {
-        let modal = document.getElementById("myModal");
         modal.style.display = "block";
-        let closeButton = document.getElementById('close');
-        closeButton.addEventListener('click', function () {
-            modal.style.display = "none";
-        });
-        window.onclick = function (event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        }
     });
+    closeButton.addEventListener('click', function () {
+        modal.style.display = "none";
+    });
+    window.onclick = function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    }
+    if (regMessage.firstElementChild) {
+        modal.style.display = "block";
+    }
 }
