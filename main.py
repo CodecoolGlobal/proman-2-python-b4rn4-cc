@@ -69,5 +69,14 @@ def main():
         app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon/favicon.ico'))
 
 
+@app.route("/api/boards/create", methods=["POST"])
+@json_response
+def create_boards():
+    data = request.get_json()["boardTitle"]
+    print(data)
+    queires.create_board(data)
+    # return data
+
+
 if __name__ == '__main__':
     main()

@@ -16,22 +16,24 @@
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
     <script type="module" src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+    <script type="module" src="{{ url_for('static', filename='js/main.js') }}" defer></script>
 </head>
 <body>
 <div id="myModal" class="modal">
     <div class="modal-content">
         <div class="regPlatform">
-        <div id="regMessage">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class="flashes">
-                        {% for message in messages %}
-                            <p style="color: #9C1A1C; padding-top: 20px; font-weight: bold">{{ message }}</p>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-        </div>
+            <div id="regMessage">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class="flashes">
+                            {% for message in messages %}
+                                <p style="color: #9C1A1C; padding-top: 20px; font-weight: bold">{{ message }}</p>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+            </div>
             <form action="/registration" method="post">
                 <label class="login-label" for="user_name">User name</label>
                 <input class="login-input" type="text" name="user_name" id="user_name">
@@ -54,5 +56,6 @@
     {% endif %}
 </div>
 <div id="root"></div>
+<button type="submit" id="createButton">Create board</button>
 </body>
 </html>

@@ -7,4 +7,12 @@ function init() {
 
 }
 
+const createButton = document.getElementById("createButton");
+createButton.addEventListener("click", function () {
+        boardsManager.createBoards({boardTitle: "New board"});
+    }
+)
+;
+
+
 init();
