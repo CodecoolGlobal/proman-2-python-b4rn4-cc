@@ -44,18 +44,18 @@ section.board-section{
     border-radius: 3px;
 }
 
-.board{
+.board-container{
     height: 50px;
     background: #fff;
     border-radius: var(--border-radius) var(--border-radius) 0 0;
 }
 
-.board-title{
+.board{
     margin: 13px;
     display: inline-block;
     font-size: 20px;
 }
-.board-title, .board-add, .board-toggle{
+.board, .board-add, .board-toggle{
     display: inline-block;
 }
 
