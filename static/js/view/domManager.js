@@ -17,13 +17,26 @@ export let domManager = {
     },
 };
 
+
 export let displayRegModal = function () {
-    let closeButton = document.getElementById('close');
-    let modal = document.getElementById("myModal");
-    let regButton = document.getElementById("regButton");
-    let regMessage = document.getElementById("regMessage");
-    regButton.addEventListener('click', function () {
+    const closeButton = document.getElementById('close');
+    const modal = document.getElementById("myModal");
+    const regButton = document.getElementById("regButton");
+    const regMessage = document.getElementById("regMessage");
+    const inputFields = document.getElementById("form")
+    const inputButton = document.getElementById("inputButton");
+    const logButton = document.getElementById("logButton");
+
+    logButton.addEventListener('click', function () {
+        inputFields.setAttribute("action", "/login");
         modal.style.display = "block";
+        inputButton.innerText = "Login"
+    });
+
+    regButton.addEventListener('click', function () {
+        inputFields.setAttribute("action", "/registration");
+        modal.style.display = "block";
+        inputButton.innerText = "Create"
     });
     closeButton.addEventListener('click', function () {
         modal.style.display = "none";
