@@ -17,12 +17,29 @@ export let boardsManager = {
             );
         }
     },
+
     createBoards: async function (boardTitle) {
         await dataHandler.createNewBoard(boardTitle);
+    },
+
+    renameBoard: async  function () {
+        const boards = await dataHandler.getBoards();
+        boards.forEach((board) => {
+            domManager.addEventListener(
+                `.toggle-board-button[data-board-id="${board.id}"]`,
+                "click",
+
+            )
+        })
     }
 };
 
 function showHideButtonHandler(clickEvent) {
     const boardId = clickEvent.target.dataset.boardId;
     cardsManager.loadCards(boardId);
+}
+
+function  renameBoardHandler (clickEvent) {
+    const boardId = clickEvent.target.dataset.boardId;
+
 }
