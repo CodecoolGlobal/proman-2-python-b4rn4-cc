@@ -1,9 +1,12 @@
 import {boardsManager} from "./controller/boardsManager.js";
+import {displayRegModal} from "./view/domManager.js";
 
 async function init() {
     await boardsManager.loadBoards();
     await boardsManager.renameBoard()
     await boardsManager.saveBoardRename()
+    await displayRegModal();
+
 
 }
 
