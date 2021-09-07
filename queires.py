@@ -65,6 +65,17 @@ def list_users():
     return users
 
 
+def get_password_by_username(name):
+    password = data_manager.execute_select(
+        """SELECT password
+        FROM users
+        WHERE user_name = %(name)s
+        """,
+        variables={'name': name}
+    )
+    return password
+
+
 def new_user(user_name, password):
     registration_time = datetime.datetime.now()
     data_manager.execute_insert(

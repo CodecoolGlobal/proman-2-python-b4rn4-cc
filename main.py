@@ -54,11 +54,28 @@ def registration():
     return redirect('/')
 
 
+@app.route("/login", methods=["POST"])
+def validate_login():
+    user_login = request.form.get("user_name")
+    user_password = request.form.get("password")
+    users = queires.list_users()
+    username = [user["user_name"] for user in users]
+    if user_login in username:
+        stored_pw = queires.get_password_by_username(user_login)[0]['password']
+        print(stored_pw)
+        if data_manager.verify_password(user_password, stored_pw):
+            session['user'] = user_login
+            return redirect('/')
+        flash("Invalid username or password!")
+        return redirect('/')
+    flash("Invalid username or password!")
+    return redirect('/')
+
 
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("display_list"))
+    return redirect('/')
 
 
 def main():

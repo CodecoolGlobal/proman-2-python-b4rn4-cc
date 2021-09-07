@@ -22,7 +22,7 @@ export let displayRegModal = function () {
     const closeButton = document.getElementById('close');
     const modal = document.getElementById("myModal");
     const regButton = document.getElementById("regButton");
-    const regMessage = document.getElementById("regMessage");
+    const flashMessage = document.getElementById("flashMessage");
     const inputFields = document.getElementById("form")
     const inputButton = document.getElementById("inputButton");
     const logButton = document.getElementById("logButton");
@@ -46,7 +46,7 @@ export let displayRegModal = function () {
             modal.style.display = "none";
         }
     }
-    if (regMessage.firstElementChild) {
+    if (flashMessage.firstElementChild) {
         modal.style.display = "block";
     }
 }
