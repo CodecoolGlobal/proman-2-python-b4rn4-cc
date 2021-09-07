@@ -1,6 +1,6 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request, flash, redirect
 from dotenv import load_dotenv
-
+import data_manager
 
 from util import json_response
 import mimetypes
@@ -9,6 +9,7 @@ import queires
 mimetypes.add_type('application/javascript', '.js')
 app = Flask(__name__)
 load_dotenv()
+
 
 @app.route("/")
 def index():
@@ -35,6 +36,20 @@ def get_cards_for_board(board_id: int):
     :param board_id: id of the parent board
     """
     return queires.get_cards_for_board(board_id)
+
+
+@app.route("/registration", methods=["POST"])
+def registration():
+    user_name = request.form.get('user_name')
+    # users_data = queires.list_users()
+    # for user_data in users_data:
+    #     if user_data['user_name'] == user_name:
+    #         flash('This User Name is already exists!')
+    #         return redirect('/registration')
+    password = request.form.get('password')
+    hashed_password = data_manager.hash_password(password)
+    queires.new_user(user_name, hashed_password)
+    return redirect('/')
 
 
 def main():
