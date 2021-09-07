@@ -24,17 +24,19 @@ export let boardsManager = {
 
     createBoards: async function (boardTitle) {
         await dataHandler.createNewBoard(boardTitle);
+        removeBoards();
+        await this.loadBoards();
     },
 
-    renameBoard: async  function () {
+    renameBoard: async function () {
         const boards = await dataHandler.getBoards();
         boards.forEach((board) => {
             domManager.addEventListener(
                 `.board[data-board-id="${board.id}"]`,
                 "click",
                 renameBoardHandler
-            )
-        })
+            );
+        });
     },
 
     saveBoardRename: async function () {
@@ -44,8 +46,8 @@ export let boardsManager = {
                 `.board-save-button[data-board-id="${board.id}"]`,
                 "click",
                 saveBoardRenameHandler
-            )
-        })
+            );
+        });
     }
 };
 
@@ -54,20 +56,30 @@ function showHideButtonHandler(clickEvent) {
     cardsManager.loadCards(boardId);
 }
 
-function renameBoardHandler (clickEvent) {
-    const board = clickEvent.target
-    board.style.display = 'none'
-    board.parentElement.children[INPUT].style.display = 'inline-block'
-    board.parentElement.children[SAVE].style.display = 'inline-block'
+function renameBoardHandler(clickEvent) {
+    const board = clickEvent.target;
+    board.style.display = 'none';
+    board.parentElement.children[INPUT].style.display = 'inline-block';
+    board.parentElement.children[SAVE].style.display = 'inline-block';
 }
 
-function saveBoardRenameHandler (clickEvent) {
-    const board = clickEvent.target
-    board.style.display = 'none'
-    board.parentElement.children[TITLE].innerHTML = board.parentElement.children[1].value
-    const boardTitle = board.parentElement.children[TITLE].innerHTML
-    board.parentElement.children[TITLE].style.display = 'inline-block'
-    board.parentElement.children[INPUT].style.display = 'none'
+function saveBoardRenameHandler(clickEvent) {
+    const board = clickEvent.target;
+    board.style.display = 'none';
+    board.parentElement.children[TITLE].innerHTML = board.parentElement.children[1].value;
+    const boardTitle = board.parentElement.children[TITLE].innerHTML;
+    board.parentElement.children[TITLE].style.display = 'inline-block';
+    board.parentElement.children[INPUT].style.display = 'none';
     const boardId = board.dataset.boardId;
     dataHandler.updateBoardName(boardId, boardTitle);
+}
+
+function removeBoards() {
+    const parentDiv = document.getElementById("root");
+    let numberOfBoards = parentDiv.children.length;
+    let i = 0;
+    while (i < numberOfBoards) {
+        parentDiv.lastElementChild.remove();
+        i++;
+    }
 }
