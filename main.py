@@ -84,19 +84,10 @@ def logout():
     return redirect('/')
 
 
-def main():
-    app.run(debug=True)
-
-    # Serving the favicon
-    with app.app_context():
-        app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon/favicon.ico'))
-
-
 @app.route("/api/boards/create", methods=["POST"])
 @json_response
 def create_boards():
     data = request.get_json()["boardTitle"]
-    print(data)
     queires.create_board(data)
     # return data
 
@@ -106,6 +97,28 @@ def create_boards():
 def update_board(board_id):
     board_name = request.get_json()
     queires.update_board_title(board_name, board_id)
+
+
+# @app.route('/api/boards/<board_id>/cards/')
+# def get_cards(bord_id):
+#     return queires.get_cards_for_board(bord_id)
+
+
+@app.route('/api/boards/<int:board_id>/cards/create', methods=['POST'])
+@json_response
+def create_cards(board_id):
+    card_name = request.get_json()["cardTitle"]
+    queires.create_card(card_name, board_id)
+
+
+def main():
+    app.run(debug=True)
+
+    # Serving the favicon
+    with app.app_context():
+        app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon/favicon.ico'))
+
+
 
 
 if __name__ == '__main__':
