@@ -29,6 +29,7 @@ export let boardsManager = {
         await this.renameBoard();
         await this.saveBoardRename();
         await cardsManager.createCardsButton();
+        await this.deleteBoardButton();
     },
 
     renameBoard: async function () {
@@ -60,6 +61,7 @@ export let boardsManager = {
                 `.delete-board[data-board-id="${board.id}"]`,
                 "click",
                 deleteBoard
+
             );
         });
     }
@@ -107,5 +109,11 @@ async function deleteBoard(clickEvent){
     const board = clickEvent.target;
     const boardId = board.dataset.boardId;
     await dataHandler.deleteBoard(boardId)
-    // await boardsManager.loadBoards()
+    await clearRoot()
+    await boardsManager.loadBoards()
+}
+
+async function clearRoot(){
+    let root = await document.getElementById("root");
+    root.innerHTML = ""
 }
