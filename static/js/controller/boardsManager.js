@@ -53,7 +53,12 @@ export let boardsManager = {
 
 function showHideButtonHandler(clickEvent) {
     const boardId = clickEvent.currentTarget.dataset.boardId;
-    cardsManager.loadCards(boardId);
+    const column = clickEvent.currentTarget.parentElement.nextElementSibling.firstElementChild
+    if (column) {
+        cardsManager.unLoadCards(column);
+    } else {
+        cardsManager.loadCards(boardId);
+    }
 }
 
 function renameBoardHandler(clickEvent) {
