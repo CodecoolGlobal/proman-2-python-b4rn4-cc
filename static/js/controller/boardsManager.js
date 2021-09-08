@@ -27,6 +27,7 @@ export let boardsManager = {
         removeBoards();
         await this.loadBoards();
         await this.renameBoard();
+        await this.saveBoardRename();
     },
 
     renameBoard: async function () {
