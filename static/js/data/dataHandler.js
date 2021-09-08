@@ -30,6 +30,9 @@ export let dataHandler = {
     },
     updateBoardName: async function (boardId, boardTitle) {
         await apiPost(`/api/boards/${boardId}/update`, boardTitle)
+    },
+    deleteBoard: async function (boardId) {
+        await apiGet(`/api/boards/${boardId}/delete`)
     }
 };
 

@@ -6,9 +6,10 @@ async function init() {
     await boardsManager.loadBoards();
     await boardsManager.renameBoard();
     await boardsManager.saveBoardRename();
-    // await cardsManager.loadCards();
+    await boardsManager.deleteBoardButton();
     await cardsManager.createCardsButton();
     await displayRegModal();
+
 
 }
 

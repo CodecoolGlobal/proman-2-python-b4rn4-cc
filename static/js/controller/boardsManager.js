@@ -51,6 +51,17 @@ export let boardsManager = {
                 saveBoardRenameHandler
             );
         });
+    },
+
+    deleteBoardButton: async function (){
+        const boards = await dataHandler.getBoards();
+        boards.forEach((board) => {
+            domManager.addEventListener(
+                `.delete-board[data-board-id="${board.id}"]`,
+                "click",
+                deleteBoard
+            );
+        });
     }
 };
 
@@ -90,4 +101,11 @@ function removeBoards() {
         parentDiv.lastElementChild.remove();
         i++;
     }
+}
+
+async function deleteBoard(clickEvent){
+    const board = clickEvent.target;
+    const boardId = board.dataset.boardId;
+    await dataHandler.deleteBoard(boardId)
+    // await boardsManager.loadBoards()
 }
