@@ -35,16 +35,23 @@ export let cardsManager = {
     createCards: async function (cardTitle, boardId) {
         let getBoardId = await boardId['boardId']
         await dataHandler.createNewCard(cardTitle, getBoardId);
-        //TODO add when the board is open
-        await this.loadCards(getBoardId);
+
     },
 
     createCardsButton: async function () {
         const addCardButtons = await document.querySelectorAll('.board-add');
         for (let addCardButton of addCardButtons) {
             let boardId = addCardButton.dataset['boardId']
-            addCardButton.addEventListener('click', function () {
-                cardsManager.createCards({cardTitle: 'New card'}, {boardId: boardId}, {statusId: '1'})
+            addCardButton.addEventListener('click', async function () {
+                await cardsManager.createCards({cardTitle: 'New card'}, {boardId: boardId}, {statusId: '1'})
+                let column = this.parentElement.nextElementSibling.firstElementChild
+                if (column) {
+                    let child = column.firstElementChild
+                    await cardsManager.unLoadCards(column)
+                    await cardsManager.loadCards(boardId);
+                } else {
+                    await cardsManager.loadCards(boardId);
+                }
             })
         }
     }
