@@ -40,6 +40,12 @@ def get_cards_for_board(board_id: int):
     return queires.get_cards_for_board(board_id)
 
 
+@app.route("/api/statuses")
+@json_response
+def get_statuses():
+    return queires.get_statuses()
+
+
 @app.route("/registration", methods=["POST"])
 def registration():
     user_name = request.form.get('user_name')

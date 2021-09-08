@@ -92,3 +92,7 @@ def new_user(user_name, password):
                    'user_name': user_name,
                    'password': password}
     )
+
+
+def get_statuses():
+    return data_manager.execute_select("""SELECT * FROM statuses""")

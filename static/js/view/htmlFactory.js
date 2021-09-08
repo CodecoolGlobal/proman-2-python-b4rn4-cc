@@ -1,17 +1,22 @@
 export const htmlTemplates = {
     board: 1,
-    card: 2
-}
+    card: 2,
+    column: 3
+};
 
 export function htmlFactory(template) {
     switch (template) {
         case htmlTemplates.board:
-            return boardBuilder
+            return boardBuilder;
         case htmlTemplates.card:
-            return cardBuilder
+            return cardBuilder;
+        case htmlTemplates.column:
+            return columnBuilder;
         default:
-            console.error("Undefined template: " + template)
-            return () => { return "" }
+            console.error("Undefined template: " + template);
+            return () => {
+                return "";
+            };
     }
 }
 
@@ -24,7 +29,7 @@ function boardBuilder(board) {
                     <button class="board-add">Add Card</button>
                     <button class="toggle-board-button" data-board-id="${board.id}"><i class="fas fa-chevron-down"></i></button>
                 </div>
-                <div class="board-columns">
+                <div class="board-columns" data-board-id="${board.id}">
                 
                 </div>
             </section>`;
@@ -34,3 +39,6 @@ function cardBuilder(card) {
     return `<div class="card" data-card-id="${card.id}">${card.title}</div>`;
 }
 
+function columnBuilder(column) {
+    return `<div class="board-column"><div class="board-column-title" data-status-id="${column.id}">${column.title}<div class="board-column-content"></div></div></div>`;
+}
