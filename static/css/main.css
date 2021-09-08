@@ -113,6 +113,7 @@ section.board-section{
     border-radius: var(--border-radius);
     margin: 4px 0;
     padding: 4px;
+    cursor: move;
 }
 
 .board-column:nth-of-type(1) .card{
