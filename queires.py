@@ -64,6 +64,18 @@ def update_board_title(board_name, board_id):
     """, {"board_name": board_name, "board_id": board_id})
 
 
+def create_card(card_name, board_id):
+    status_id = 1
+    card_order = 1
+    return data_manager.execute_insert("""
+    INSERT INTO cards
+    (title, board_id, status_id, card_order)
+    VALUES (%(card_name)s, %(board_id)s, %(status_id)s, %(card_order)s)""", {"card_name": card_name,
+                                                                             "board_id": board_id,
+                                                                             "status_id": status_id,
+                                                                             "card_order": card_order})
+
+
 def list_users():
     users = data_manager.execute_select(
         """SELECT *
