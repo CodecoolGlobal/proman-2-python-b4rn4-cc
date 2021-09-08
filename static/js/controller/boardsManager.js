@@ -26,6 +26,7 @@ export let boardsManager = {
         await dataHandler.createNewBoard(boardTitle);
         removeBoards();
         await this.loadBoards();
+        await this.renameBoard();
     },
 
     renameBoard: async function () {
