@@ -23,13 +23,14 @@ h1{
     transform: scale(1.2, 1);
 }
 
-button{
+button, p{
     background: #222;
     color: #fff;
     border: none;
     font-size: 14px;
     font-family: sans-serif;
     padding: 4px 10px;
+    margin-top: 14px;
 }
 
 #root{
@@ -50,6 +51,10 @@ section.board-section{
     border-radius: var(--border-radius) var(--border-radius) 0 0;
 }
 
+.username{
+    float: right;
+}
+
 .board{
     margin: 13px;
     display: inline-block;
@@ -66,7 +71,7 @@ section.board-section{
     display: none;
 }
 
-.board, .board-add, .board-toggle{
+.board, .board-add, .board-toggle, .username{
     display: inline-block;
 }
 
