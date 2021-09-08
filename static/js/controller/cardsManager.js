@@ -35,7 +35,8 @@ export let cardsManager = {
     createCards: async function (cardTitle, boardId) {
         let getBoardId = await boardId['boardId']
         await dataHandler.createNewCard(cardTitle, getBoardId);
-        // await this.loadCards(boardId);
+        //TODO add when the board is open
+        await this.loadCards(getBoardId);
     },
 
     createCardsButton: async function () {

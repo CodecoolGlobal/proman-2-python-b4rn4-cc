@@ -28,6 +28,7 @@ export let boardsManager = {
         await this.loadBoards();
         await this.renameBoard();
         await this.saveBoardRename();
+        await cardsManager.createCardsButton();
     },
 
     renameBoard: async function () {

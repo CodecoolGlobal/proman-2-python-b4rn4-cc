@@ -53,7 +53,6 @@ async function apiPost(url, payload) {
         body: JSON.stringify(payload)
     });
     if (response.status === 200) {
-        console.log(response)
         return response.json();
     }
 }
