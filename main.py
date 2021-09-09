@@ -68,9 +68,9 @@ def logout():
 @app.route("/api/boards")
 @json_response
 def get_boards():
-    """
-    All the boards
-    """
+    if session:
+        user_name = session['user']
+        return queires.get_boards(user_name)
     return queires.get_boards()
 
 

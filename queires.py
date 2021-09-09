@@ -19,7 +19,7 @@ def get_card_status(status_id):
     return status
 
 
-def get_boards():
+def get_boards(user_name='public'):
     """
     Gather all boards
     :return:
@@ -29,9 +29,11 @@ def get_boards():
     return data_manager.execute_select(
         """
         SELECT * FROM boards
+        WHERE user_name = %(user_name)s OR user_name = 'public'
         ORDER BY id
         ;
-        """
+        """,
+        variables={'user_name': user_name}
     )
 
 
