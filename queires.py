@@ -76,6 +76,22 @@ def create_card(card_name, board_id):
                                                                              "card_order": card_order})
 
 
+def delete_cards_by_board(board_id):
+    return data_manager.execute_insert(
+        """DELETE FROM cards 
+        WHERE board_id = %(board_id)s""",
+        variables={"board_id": board_id}
+    )
+
+
+def delete_board(board_id):
+    return data_manager.execute_insert(
+        """DELETE FROM boards
+        WHERE id = %(board_id)s""",
+        variables={'board_id': board_id}
+    )
+
+
 def list_users():
     users = data_manager.execute_select(
         """SELECT *

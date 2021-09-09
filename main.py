@@ -99,9 +99,11 @@ def update_board(board_id):
     queires.update_board_title(board_name, board_id)
 
 
-# @app.route('/api/boards/<board_id>/cards/')
-# def get_cards(bord_id):
-#     return queires.get_cards_for_board(bord_id)
+@app.route('/api/boards/<int:board_id>/delete')
+@json_response
+def delete_board(board_id):
+    queires.delete_cards_by_board(board_id)
+    queires.delete_board(board_id)
 
 
 @app.route('/api/boards/<int:board_id>/cards/create', methods=['POST'])
@@ -117,8 +119,6 @@ def main():
     # Serving the favicon
     with app.app_context():
         app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon/favicon.ico'))
-
-
 
 
 if __name__ == '__main__':
