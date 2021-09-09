@@ -39,10 +39,17 @@ function boardBuilder(board) {
 function cardBuilder(card) {
     return `<div class="card" data-card-id="${card.id}">
                 <div>${card.title}</div>
-                <div class="card-remove" data-card-id="${card.id}"><i class="fas fa-trash-alt"></i></div>
+                <div class="card-remove" data-card-id="${card.id}">
+                    <i class="fas fa-trash-alt"></i>
+                </div>
             </div>`;
 }
 
 function columnBuilder(column) {
-    return `<div class="board-column"><div class="board-column-title" data-status-id="${column.id}">${column.title}<div class="board-column-content"></div></div></div>`;
+    return `<div class="board-column">
+                <div class="board-column-title" data-status-id="${column.id}">
+                    ${column.title}
+                    <div class="board-column-content"></div>
+                </div>
+            </div>`;
 }
