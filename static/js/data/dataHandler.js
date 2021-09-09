@@ -35,7 +35,6 @@ export let dataHandler = {
     },
     updateCardName: async function(cardId, newCardTitle) {
         await apiPost(`/api/cards/${cardId}/update`, newCardTitle);
-        await apiPost(`/api/boards/${boardId}/update`, boardTitle)
     },
     deleteBoard: async function (boardId) {
         await apiGet(`/api/boards/${boardId}/delete`)
