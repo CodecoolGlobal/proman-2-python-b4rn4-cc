@@ -45,6 +45,10 @@ export let dataHandler = {
     },
     deleteCard: async function (cardId) {
         await apiGet(`/api/cards/${cardId}/delete`)
+    },
+    updateCardPosition: async function (cardId, cardStatusId, cardOrder) {
+        const payload = {cardStatusId: cardStatusId, cardOrder: cardOrder}
+        await apiPost(`/api/cards/${cardId}/update/position`, payload)
     }
 };
 

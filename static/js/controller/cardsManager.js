@@ -36,7 +36,10 @@ export let cardsManager = {
     createCards: async function (cardTitle, boardId) {
         let getBoardId = await boardId['boardId'];
         await dataHandler.createNewCard(cardTitle, getBoardId);
-
+        //TODO add when the board is open
+        //await this.loadCards(getBoardId);
+        //await this.columnsContainer(getBoardId)
+        //await this.moveCards(getBoardId)
     },
 
     createCardsButton: async function () {
@@ -181,22 +184,36 @@ async function saveCardRenameHandler(clickEvent) {
     card.firstElementChild.firstElementChild.remove();
     card.firstElementChild.style.display = "block";
     card.firstElementChild.innerText = newCardTitle;
-    domManager.addEventListener(`.card[data-card-id="${cardId}"`, "click", renameCardHandler);
+    domManager.addEventListener(`.card[data-card-id="${cardId}"]`, "click", renameCardHandler)
 }
 
 function dragOver(clickEvent) {
     clickEvent.preventDefault();
 }
 
-function drop(clickEvent) {
-    clickEvent.preventDefault();
-    const column = clickEvent.currentTarget;
-    const afterElement = getDragAfterElement(column, clickEvent.clientY);
-    const dragging = document.querySelector('.dragging');
-    if (afterElement == null) {
-        column.appendChild(dragging);
-    } else {
-        column.insertBefore(dragging, afterElement);
+async function drop (clickEvent) {
+    console.log('drop')
+    clickEvent.preventDefault()
+    const column = clickEvent.currentTarget
+    const afterElement = getDragAfterElement(column, clickEvent.clientY)
+    const dragging = document.querySelector('.dragging')
+    const cardCurrentStatus = dragging.dataset.cardStatus
+    const columnStatus = column.parentElement.dataset.statusId
+    const boardId = column.parentElement.parentElement.parentElement.dataset.boardId
+    const cardBoardId = dragging.dataset.boardId
+    console.log(cardBoardId)
+    console.log(boardId)
+    if (boardId === cardBoardId){
+        if (cardCurrentStatus !== columnStatus) {
+        dragging.dataset.cardStatus = columnStatus
+        }
+        if (afterElement == null) {
+            column.appendChild(dragging)
+        } else {
+            column.insertBefore(dragging, afterElement)
+        }
+        const columnChildren = column.childNodes
+        await reArrangePresentColumn(columnChildren)
     }
 }
 
@@ -224,3 +241,24 @@ async function addColumn(clickEvent) {
     await cardsManager.moveCards(boardId);
     await cardsManager.columnsContainer(boardId);
 }
+
+function reArrangePastColumn () {
+    // for next sprint !!!
+}
+
+async function reArrangePresentColumn (columnChildren) {
+    let i = 1
+    for (let columnChild of columnChildren) {
+        columnChild.dataset.cardOrder = `${i}`;
+        const cardId = columnChild.dataset.cardId;
+        const cardStatusId = columnChild.dataset.cardStatus;
+        const cardOrder = columnChild.dataset.cardOrder;
+        await dataHandler.updateCardPosition(cardId, cardStatusId, cardOrder);
+        i++;
+    }
+}
+
+
+// <div class="board-column-title" data-status-id="4">
+//
+// <div class="card" draggable="true" data-card-id="6" data-card-status="4" data-card-order="2">
