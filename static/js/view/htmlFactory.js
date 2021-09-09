@@ -1,7 +1,8 @@
 export const htmlTemplates = {
     board: 1,
     card: 2,
-    column: 3
+    column: 3,
+    cardRename: 4
 };
 
 export function htmlFactory(template) {
@@ -12,6 +13,8 @@ export function htmlFactory(template) {
             return cardBuilder;
         case htmlTemplates.column:
             return columnBuilder;
+        case htmlTemplates.cardRename:
+            return cardRenameBuilder;
         default:
             console.error("Undefined template: " + template);
             return () => {
@@ -36,9 +39,20 @@ function boardBuilder(board) {
 }
 
 function cardBuilder(card) {
-    return `<div class="card" data-card-id="${card.id}">${card.title}</div>`;
+    return `<div class="card" data-card-id="${card.id}"><div class="card-title">${card.title}</div><div class="card-remove"><i class="fas fa-trash-alt"></i> </div></div>`;
 }
 
 function columnBuilder(column) {
     return `<div class="board-column"><div class="board-column-title" data-status-id="${column.id}">${column.title}<div class="board-column-content"></div></div></div>`;
+}
+
+function cardRenameBuilder(cardElement) {
+    const oldTitle = cardElement.innerText;
+    const cardInput = document.createElement("input");
+    const saveCardButton = document.createElement("button");
+    cardInput.setAttribute("value", oldTitle);
+    saveCardButton.innerText = "Save";
+    cardElement.style.display = "flex";
+    cardElement.style.alignItems = "baseline";
+    return [cardInput, saveCardButton];
 }

@@ -29,7 +29,10 @@ export let dataHandler = {
         await apiPost(`/api/boards/${boardId}/cards/create`, cardTitle);
     },
     updateBoardName: async function (boardId, boardTitle) {
-        await apiPost(`/api/boards/${boardId}/update`, boardTitle)
+        await apiPost(`/api/boards/${boardId}/update`, boardTitle);
+    },
+    updateCardName: async function(cardId, newCardTitle) {
+        await apiPost(`/api/cards/${cardId}/update`, newCardTitle);
     }
 };
 

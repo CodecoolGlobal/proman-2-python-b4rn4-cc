@@ -99,9 +99,11 @@ def update_board(board_id):
     queires.update_board_title(board_name, board_id)
 
 
-# @app.route('/api/boards/<board_id>/cards/')
-# def get_cards(bord_id):
-#     return queires.get_cards_for_board(bord_id)
+@app.route('/api/cards/<int:card_id>/update', methods=["POST"])
+@json_response
+def update_card(card_id):
+    card_name = request.get_json()
+    queires.update_card_title(card_name, card_id)
 
 
 @app.route('/api/boards/<int:board_id>/cards/create', methods=['POST'])

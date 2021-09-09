@@ -42,7 +42,7 @@ def get_cards_for_board(board_id):
         """
         SELECT * FROM cards
         WHERE cards.board_id = %(board_id)s
-        ;
+        ORDER BY cards.card_order;
         """
         , {"board_id": board_id})
 
@@ -74,6 +74,15 @@ def create_card(card_name, board_id):
                                                                              "board_id": board_id,
                                                                              "status_id": status_id,
                                                                              "card_order": card_order})
+
+
+def update_card_title(card_name, card_id):
+    data_manager.execute_insert("""
+    UPDATE cards
+    SET title = %(new_title)s
+    WHERE id = %(id)s;
+    """, {"new_title": card_name,
+          "id": card_id})
 
 
 def list_users():
