@@ -192,10 +192,21 @@ function drop (clickEvent) {
     const column = clickEvent.currentTarget
     const afterElement = getDragAfterElement(column, clickEvent.clientY)
     const dragging = document.querySelector('.dragging')
+    const cardCurrentStatus = dragging.dataset.cardStatus
+    const columnStatus = column.parentElement.dataset.statusId
+    if (cardCurrentStatus !== columnStatus) {
+        dragging.dataset.cardStatus = columnStatus
+    }
     if (afterElement == null) {
         column.appendChild(dragging)
     } else {
         column.insertBefore(dragging, afterElement)
+    }
+    const columnChildren = column.childNodes
+    let i = 1
+    for (let columnChild of columnChildren) {
+        columnChild.dataset.cardOrder = `${i}`;
+        i++
     }
 }
 
