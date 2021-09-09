@@ -92,6 +92,7 @@ section.board-section{
 
 .board-column-content{
     min-height: 49px;
+    padding-bottom: 30px;
 }
 
 .board-column-content:empty{
@@ -113,6 +114,7 @@ section.board-section{
     border-radius: var(--border-radius);
     margin: 4px 0;
     padding: 4px;
+    cursor: move;
 }
 
 .board-column:nth-of-type(1) .card{
@@ -177,4 +179,8 @@ section.board-section{
 
 .card-title{
     padding-right: 16px;
+}
+
+.card.dragging {
+    opacity: 30%;
 }
