@@ -67,13 +67,15 @@ export let boardsManager = {
     }
 };
 
-function showHideButtonHandler(clickEvent) {
+async function showHideButtonHandler(clickEvent) {
     const boardId = clickEvent.currentTarget.dataset.boardId;
     const column = clickEvent.currentTarget.parentElement.nextElementSibling.firstElementChild
     if (column) {
-        cardsManager.unLoadCards(column);
+        await cardsManager.unLoadCards(column);
     } else {
-        cardsManager.loadCards(boardId);
+        await cardsManager.loadCards(boardId);
+        await cardsManager.columnsContainer(boardId)
+        await cardsManager.moveCards(boardId);
     }
 }
 
@@ -111,6 +113,8 @@ async function deleteBoard(clickEvent){
     await dataHandler.deleteBoard(boardId)
     await clearRoot()
     await boardsManager.loadBoards()
+    await cardsManager.columnsContainer(boardId)
+    await cardsManager.moveCards(boardId)
 }
 
 async function clearRoot(){
