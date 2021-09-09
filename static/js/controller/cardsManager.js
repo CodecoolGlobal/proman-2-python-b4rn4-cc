@@ -221,3 +221,10 @@ async function addColumn(clickEvent){
     await clearBoard(board)
     await cardsManager.loadCards(boardId)
 }
+
+
+
+
+// <div class="board-column-title" data-status-id="4">
+//
+// <div class="card" draggable="true" data-card-id="6" data-card-status="4" data-card-order="2">

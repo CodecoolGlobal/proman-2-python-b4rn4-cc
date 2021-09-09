@@ -41,7 +41,7 @@ function boardBuilder(board) {
 }
 
 function cardBuilder(card) {
-    return `<div class="card" draggable="true" data-card-id="${card.id}"><div class="card-title">${card.title}</div><div class="card-remove"><i class="fas fa-trash-alt"></i> </div></div>`;
+    return `<div class="card" draggable="true" data-card-id="${card.id}" data-card-status="${card.status_id}" data-card-order="${card.card_order}"><div class="card-title">${card.title}</div><div class="card-remove"><i class="fas fa-trash-alt"></i> </div></div>`;
 }
 
 function columnBuilder(column) {
