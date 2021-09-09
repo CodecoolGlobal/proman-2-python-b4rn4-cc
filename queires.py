@@ -35,20 +35,6 @@ def get_boards():
     )
 
 
-def get_cards_for_board(board_id):
-    # remove this code once you implement the database
-
-    matching_cards = data_manager.execute_select(
-        """
-        SELECT * FROM cards
-        WHERE cards.board_id = %(board_id)s
-        ;
-        """
-        , {"board_id": board_id})
-
-    return matching_cards
-
-
 def create_board(board_name):
     return data_manager.execute_insert("""
     INSERT INTO boards
@@ -64,6 +50,14 @@ def update_board_title(board_name, board_id):
     """, {"board_name": board_name, "board_id": board_id})
 
 
+def delete_board(board_id):
+    return data_manager.execute_insert(
+        """DELETE FROM boards
+        WHERE id = %(board_id)s""",
+        variables={'board_id': board_id}
+    )
+
+
 def create_card(card_name, board_id):
     status_id = 1
     card_order = 1
@@ -76,6 +70,20 @@ def create_card(card_name, board_id):
                                                                              "card_order": card_order})
 
 
+def get_cards_for_board(board_id):
+    # remove this code once you implement the database
+
+    matching_cards = data_manager.execute_select(
+        """
+        SELECT * FROM cards
+        WHERE cards.board_id = %(board_id)s
+        ;
+        """
+        , {"board_id": board_id})
+
+    return matching_cards
+
+
 def delete_cards_by_board(board_id):
     return data_manager.execute_insert(
         """DELETE FROM cards 
@@ -84,11 +92,19 @@ def delete_cards_by_board(board_id):
     )
 
 
-def delete_board(board_id):
+def get_cards():
+    return data_manager.execute_select(
+        """SELECT *
+        FROM cards"""
+    )
+
+
+def delete_card(card_id):
     return data_manager.execute_insert(
-        """DELETE FROM boards
-        WHERE id = %(board_id)s""",
-        variables={'board_id': board_id}
+        """DELETE FROM cards
+            WHERE id = %(card_id)s
+        """,
+        variables={"card_id": card_id}
     )
 
 
