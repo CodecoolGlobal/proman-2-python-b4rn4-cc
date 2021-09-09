@@ -37,6 +37,20 @@ def get_boards(user_name='public'):
     )
 
 
+def get_cards_for_board(board_id):
+    # remove this code once you implement the database
+
+    matching_cards = data_manager.execute_select(
+        """
+        SELECT * FROM cards
+        WHERE cards.board_id = %(board_id)s
+        ORDER BY cards.card_order;
+        """
+        , {"board_id": board_id})
+
+    return matching_cards
+
+
 def create_board(board_name, user_name):
     return data_manager.execute_insert("""
     INSERT INTO boards
@@ -73,18 +87,27 @@ def create_card(card_name, board_id):
                                                                              "card_order": card_order})
 
 
-def get_cards_for_board(board_id):
-    # remove this code once you implement the database
+def update_card_title(card_name, card_id):
+    data_manager.execute_insert("""
+    UPDATE cards
+    SET title = %(new_title)s
+    WHERE id = %(id)s;
+    """, {"new_title": card_name,
+          "id": card_id})
 
-    matching_cards = data_manager.execute_select(
-        """
-        SELECT * FROM cards
-        WHERE cards.board_id = %(board_id)s
-        ;
-        """
-        , {"board_id": board_id})
 
-    return matching_cards
+# def get_cards_for_board(board_id):
+#     # remove this code once you implement the database
+#
+#     matching_cards = data_manager.execute_select(
+#         """
+#         SELECT * FROM cards
+#         WHERE cards.board_id = %(board_id)s
+#         ;
+#         """
+#         , {"board_id": board_id})
+#
+#     return matching_cards
 
 
 def delete_cards_by_board(board_id):
