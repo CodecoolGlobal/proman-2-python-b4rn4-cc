@@ -92,6 +92,7 @@ section.board-section{
 
 .board-column-content{
     min-height: 49px;
+    padding-bottom: 30px;
 }
 
 .board-column-content:empty{
@@ -178,4 +179,8 @@ section.board-section{
 
 .card-title{
     padding-right: 16px;
+}
+
+.card.dragging {
+    opacity: 30%;
 }

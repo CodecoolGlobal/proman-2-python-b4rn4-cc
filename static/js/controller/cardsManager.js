@@ -37,8 +37,8 @@ export let cardsManager = {
         await dataHandler.createNewCard(cardTitle, getBoardId);
         //TODO add when the board is open
         await this.loadCards(getBoardId);
-        await this.moveCards();
-
+        await this.columnsContainer(getBoardId)
+        await this.moveCards(getBoardId)
     },
 
     createCardsButton: async function () {
@@ -59,8 +59,47 @@ export let cardsManager = {
         }
     },
 
-    moveCards: async function () {
+    moveCards: async function (boardId) {
+        const cards = await dataHandler.getCardsByBoardId(boardId)
+        for (let card of cards) {
+                    domManager.addEventListener(
+                    `.card[data-card-id="${card.id}"]`,
+                    'dragstart',
+                        dragStart
+                    )
+                    domManager.addEventListener(
+                        `.card[data-card-id="${card.id}"]`,
+                        'dragend',
+                        dragEnd
+                    )
+        }
+    },
 
+    columnsContainer: async function (boardId) {
+        const columns = await dataHandler.getStatuses()
+        console.log(columns)
+        for (let column of columns) {
+            domManager.addEventListener(
+                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content[data-status-id="${column.id}"]`,
+                'dragenter',
+                dragEnter
+            )
+            domManager.addEventListener(
+                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content[data-status-id="${column.id}"]`,
+                'dragleave',
+                dragLeave
+            )
+            domManager.addEventListener(
+                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content[data-status-id="${column.id}"]`,
+                'dragover',
+                dragOver
+            )
+            domManager.addEventListener(
+                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content[data-status-id="${column.id}"]`,
+                'drop',
+                drop
+            )
+        }
     }
 };
 
@@ -72,10 +111,46 @@ async function deleteButtonHandler(clickEvent) {
     const board = clickEvent.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement
     const boardId = board.dataset.boardId
     await clearBoard(board)
-    await cardsManager.loadCards(boardId)
+    await this.loadCards(boardId)
+    await this.columnsContainer(boardId)
+    await this.moveCards(boardId)
 }
 
 async function clearBoard(board){
     board.innerHTML = ""
 }
 
+function dragStart (clickEvent) {
+    console.log('dragStart')
+    const card = clickEvent.target
+    card.classList.add('dragging')
+}
+
+function dragEnd (clickEvent) {
+    console.log('dragEnd')
+    const card = clickEvent.target
+    card.classList.remove('dragging')
+}
+
+function dragEnter (clickEvent) {
+    clickEvent.preventDefault()
+    console.log('dragEnter')
+}
+
+function dragLeave (clickEvent) {
+    clickEvent.preventDefault()
+    console.log('dragLeave')
+}
+
+function dragOver (clickEvent) {
+    clickEvent.preventDefault()
+    console.log('dragOver')
+}
+
+function drop (clickEvent) {
+    clickEvent.preventDefault()
+    console.log('drop')
+    const dragging = document.querySelector('.dragging')
+    const column = clickEvent.currentTarget
+    column.appendChild(dragging)
+}
