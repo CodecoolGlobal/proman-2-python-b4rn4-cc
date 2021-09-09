@@ -88,22 +88,22 @@ export let cardsManager = {
         console.log(columns)
         for (let column of columns) {
             domManager.addEventListener(
-                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content[data-status-id="${column.id}"]`,
+                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content`,
                 'dragenter',
                 dragEnter
             )
             domManager.addEventListener(
-                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content[data-status-id="${column.id}"]`,
+                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content`,
                 'dragleave',
                 dragLeave
             )
             domManager.addEventListener(
-                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content[data-status-id="${column.id}"]`,
+                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content`,
                 'dragover',
                 dragOver
             )
             domManager.addEventListener(
-                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content[data-status-id="${column.id}"]`,
+                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content`,
                 'drop',
                 drop
             )
@@ -186,8 +186,27 @@ function dragOver (clickEvent) {
 
 function drop (clickEvent) {
     clickEvent.preventDefault()
-    console.log('drop')
-    const dragging = document.querySelector('.dragging')
     const column = clickEvent.currentTarget
-    column.appendChild(dragging)
+    console.log('drop')
+    const afterElement = getDragAfterElement(column, clickEvent.clientY)
+    const dragging = document.querySelector('.dragging')
+    if (afterElement == null) {
+        column.appendChild(dragging)
+    } else {
+        column.insertBefore(dragging, afterElement)
+    }
+}
+
+function getDragAfterElement(column, y) {
+    const draggableElements = [...column.querySelectorAll('.card:not(.dragging)')]
+
+    return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect()
+        const offset = y - box.top - box.height / 2
+        if (offset < 0 && offset > closest.offset) {
+            return {offset: offset, element: child}
+        } else {
+            return closest
+        }
+    }, { offset: Number.NEGATIVE_INFINITY }).element
 }
