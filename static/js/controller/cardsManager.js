@@ -221,4 +221,6 @@ async function addColumn(clickEvent) {
     await dataHandler.addStatus(boardId, statusTitle);
     await clearBoard(board);
     await cardsManager.loadCards(boardId);
+    await cardsManager.moveCards(boardId);
+    await cardsManager.columnsContainer(boardId);
 }
