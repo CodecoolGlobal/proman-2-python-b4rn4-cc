@@ -33,6 +33,8 @@ def get_statuses(board_id):
 def add_new_status(board_id):
     status_title = request.get_json()
     queires.add_status(board_id, status_title)
+
+
 @app.route("/registration", methods=["POST"])
 def registration():
     user_name = request.form.get('user_name')
@@ -104,6 +106,8 @@ def update_board(board_id):
 def update_card(card_id):
     card_name = request.get_json()
     queires.update_card_title(card_name, card_id)
+
+
 @app.route('/api/boards/<int:board_id>/delete')
 @json_response
 def delete_board(board_id):
@@ -138,6 +142,13 @@ def get_cards():
 @json_response
 def delete_card(card_id):
     queires.delete_card(card_id)
+
+
+@app.route('/api/cards/<card_id>/update')
+@json_response
+def update_card_position(card_id):
+    card_status = request.get_json()['cardStatusId']
+    card_order = request.get_json()['cardOrder']
 
 
 def main():
