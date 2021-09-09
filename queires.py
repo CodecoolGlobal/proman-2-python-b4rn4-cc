@@ -164,5 +164,21 @@ def new_user(user_name, password):
     )
 
 
-def get_statuses():
-    return data_manager.execute_select("""SELECT * FROM statuses""")
+def get_statuses(board_id):
+    statuses = data_manager.execute_select(
+        """SELECT * 
+        FROM statuses
+        WHERE boards_id = %(board_id)s OR boards_id = 0
+        """, variables={'board_id': board_id})
+    return statuses
+
+
+def add_status(board_id, status_title):
+    return data_manager.execute_insert(
+        """INSERT INTO statuses
+        (title, boards_id)
+        VALUES (%(title)s, %(board_id)s)
+        """,
+        variables={"title": status_title,
+                   "board_id": board_id}
+    )

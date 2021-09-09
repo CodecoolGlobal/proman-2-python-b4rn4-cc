@@ -5,7 +5,7 @@ import {domManager} from "../view/domManager.js";
 export let cardsManager = {
     loadCards: async function (boardId) {
         const cards = await dataHandler.getCardsByBoardId(boardId);
-        const columns = await dataHandler.getStatuses();
+        const columns = await dataHandler.getStatuses(boardId);
         for (let column of columns) {
             const columnBuilder = htmlFactory(htmlTemplates.column);
             const colContent = columnBuilder(column);
@@ -61,10 +61,19 @@ export let cardsManager = {
     },
     renameCards: async function (boardId) {
         const cards = await dataHandler.getCardsByBoardId(boardId);
-        // console.log(cards);
         cards.forEach((card) => {
             domManager.addEventListener(`.card[data-card-id="${card.id}"`, "click", renameCardHandler);
         });
+    },
+    createColumnButton: async function(){
+        const boards = await dataHandler.getBoards();
+        boards.forEach((board) => {
+            domManager.addEventListener(
+                `.create-column[data-board-id="${board.id}"`,
+                "click",
+                addColumn
+            )
+        })
     },
 
     moveCards: async function (boardId) {
@@ -84,8 +93,7 @@ export let cardsManager = {
     },
 
     columnsContainer: async function (boardId) {
-        const columns = await dataHandler.getStatuses()
-        console.log(columns)
+        const columns = await dataHandler.getStatuses(boardId)
         for (let column of columns) {
             domManager.addEventListener(
                 `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content`,
@@ -115,13 +123,13 @@ export let cardsManager = {
 async function deleteButtonHandler(clickEvent) {
     const card = clickEvent.target.parentElement.parentElement;
     const cardId = card.dataset.cardId;
-    await dataHandler.deleteCard(cardId)
     const board = clickEvent.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement
     const boardId = board.dataset.boardId
+    await dataHandler.deleteCard(cardId)
     await clearBoard(board)
-    await this.loadCards(boardId)
-    await this.columnsContainer(boardId)
-    await this.moveCards(boardId)
+    await cardsManager.loadCards(boardId)
+    await cardsManager.columnsContainer(boardId)
+    await cardsManager.moveCards(boardId)
 }
 
 async function clearBoard(board){
@@ -129,25 +137,21 @@ async function clearBoard(board){
 }
 
 function dragStart (clickEvent) {
-    console.log('dragStart')
     const card = clickEvent.target
     card.classList.add('dragging')
 }
 
 function dragEnd (clickEvent) {
-    console.log('dragEnd')
     const card = clickEvent.target
     card.classList.remove('dragging')
 }
 
 function dragEnter (clickEvent) {
     clickEvent.preventDefault()
-    console.log('dragEnter')
 }
 
 function dragLeave (clickEvent) {
     clickEvent.preventDefault()
-    console.log('dragLeave')
 }
 
 function renameCardHandler(clickEvent) {
@@ -181,13 +185,11 @@ async function saveCardRenameHandler(clickEvent) {
 
 function dragOver (clickEvent) {
     clickEvent.preventDefault()
-    console.log('dragOver')
 }
 
 function drop (clickEvent) {
     clickEvent.preventDefault()
     const column = clickEvent.currentTarget
-    console.log('drop')
     const afterElement = getDragAfterElement(column, clickEvent.clientY)
     const dragging = document.querySelector('.dragging')
     if (afterElement == null) {
@@ -209,4 +211,13 @@ function getDragAfterElement(column, y) {
             return closest
         }
     }, { offset: Number.NEGATIVE_INFINITY }).element
+}
+
+async function addColumn(clickEvent){
+    const boardId = clickEvent.target.dataset.boardId
+    const board = clickEvent.target.parentElement.nextElementSibling
+    const statusTitle = 'New Status'
+    await dataHandler.addStatus(boardId, statusTitle)
+    await clearBoard(board)
+    await cardsManager.loadCards(boardId)
 }
