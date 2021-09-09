@@ -19,7 +19,7 @@ def get_card_status(status_id):
     return status
 
 
-def get_boards():
+def get_boards(user_name='public'):
     """
     Gather all boards
     :return:
@@ -29,17 +29,34 @@ def get_boards():
     return data_manager.execute_select(
         """
         SELECT * FROM boards
+        WHERE user_name = %(user_name)s OR user_name = 'public'
         ORDER BY id
         ;
-        """
+        """,
+        variables={'user_name': user_name}
     )
 
 
-def create_board(board_name):
+def get_cards_for_board(board_id):
+    # remove this code once you implement the database
+
+    matching_cards = data_manager.execute_select(
+        """
+        SELECT * FROM cards
+        WHERE cards.board_id = %(board_id)s
+        ORDER BY cards.card_order;
+        """
+        , {"board_id": board_id})
+
+    return matching_cards
+
+
+def create_board(board_name, user_name):
     return data_manager.execute_insert("""
     INSERT INTO boards
-    (title)
-    VALUES (%(board_name)s)""", {"board_name": board_name})
+    (title, user_name)
+    VALUES (%(board_name)s, %(user_name)s)""", {"board_name": board_name,
+                                                "user_name": user_name})
 
 
 def update_board_title(board_name, board_id):
@@ -70,18 +87,27 @@ def create_card(card_name, board_id):
                                                                              "card_order": card_order})
 
 
-def get_cards_for_board(board_id):
-    # remove this code once you implement the database
+def update_card_title(card_name, card_id):
+    data_manager.execute_insert("""
+    UPDATE cards
+    SET title = %(new_title)s
+    WHERE id = %(id)s;
+    """, {"new_title": card_name,
+          "id": card_id})
 
-    matching_cards = data_manager.execute_select(
-        """
-        SELECT * FROM cards
-        WHERE cards.board_id = %(board_id)s
-        ;
-        """
-        , {"board_id": board_id})
 
-    return matching_cards
+# def get_cards_for_board(board_id):
+#     # remove this code once you implement the database
+#
+#     matching_cards = data_manager.execute_select(
+#         """
+#         SELECT * FROM cards
+#         WHERE cards.board_id = %(board_id)s
+#         ;
+#         """
+#         , {"board_id": board_id})
+#
+#     return matching_cards
 
 
 def delete_cards_by_board(board_id):

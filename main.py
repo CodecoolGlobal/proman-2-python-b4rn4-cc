@@ -68,17 +68,21 @@ def logout():
 @app.route("/api/boards")
 @json_response
 def get_boards():
-    """
-    All the boards
-    """
+    if session:
+        user_name = session['user']
+        return queires.get_boards(user_name)
     return queires.get_boards()
 
 
 @app.route("/api/boards/create", methods=["POST"])
 @json_response
 def create_boards():
+    if session:
+        user_name = session['user']
+    else:
+        user_name = 'public'
     data = request.get_json()["boardTitle"]
-    queires.create_board(data)
+    queires.create_board(data, user_name)
     # return data
 
 
@@ -89,6 +93,11 @@ def update_board(board_id):
     queires.update_board_title(board_name, board_id)
 
 
+@app.route('/api/cards/<int:card_id>/update', methods=["POST"])
+@json_response
+def update_card(card_id):
+    card_name = request.get_json()
+    queires.update_card_title(card_name, card_id)
 @app.route('/api/boards/<int:board_id>/delete')
 @json_response
 def delete_board(board_id):
