@@ -35,11 +35,12 @@ def get_boards():
     )
 
 
-def create_board(board_name):
+def create_board(board_name, user_name):
     return data_manager.execute_insert("""
     INSERT INTO boards
-    (title)
-    VALUES (%(board_name)s)""", {"board_name": board_name})
+    (title, user_name)
+    VALUES (%(board_name)s, %(user_name)s)""", {"board_name": board_name,
+                                                "user_name": user_name})
 
 
 def update_board_title(board_name, board_id):
