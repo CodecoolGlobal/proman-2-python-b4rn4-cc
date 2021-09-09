@@ -29,6 +29,7 @@ export let boardsManager = {
         await this.renameBoard();
         await this.saveBoardRename();
         await cardsManager.createCardsButton();
+        await this.deleteBoardButton();
     },
 
     renameBoard: async function () {
@@ -49,6 +50,18 @@ export let boardsManager = {
                 `.board-save-button[data-board-id="${board.id}"]`,
                 "click",
                 saveBoardRenameHandler
+            );
+        });
+    },
+
+    deleteBoardButton: async function (){
+        const boards = await dataHandler.getBoards();
+        boards.forEach((board) => {
+            domManager.addEventListener(
+                `.delete-board[data-board-id="${board.id}"]`,
+                "click",
+                deleteBoard
+
             );
         });
     }
@@ -90,4 +103,17 @@ function removeBoards() {
         parentDiv.lastElementChild.remove();
         i++;
     }
+}
+
+async function deleteBoard(clickEvent){
+    const board = clickEvent.target;
+    const boardId = board.dataset.boardId;
+    await dataHandler.deleteBoard(boardId)
+    await clearRoot()
+    await boardsManager.loadBoards()
+}
+
+async function clearRoot(){
+    let root = await document.getElementById("root");
+    root.innerHTML = ""
 }

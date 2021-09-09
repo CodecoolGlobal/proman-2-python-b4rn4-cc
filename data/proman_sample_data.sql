@@ -32,7 +32,8 @@ CREATE TABLE statuses (
 
 CREATE TABLE boards (
     id          SERIAL PRIMARY KEY  NOT NULL,
-    title       VARCHAR(200)        NOT NULL
+    title       VARCHAR(200)        NOT NULL,
+    user_name   VARCHAR(200)
 );
 
 CREATE TABLE cards (

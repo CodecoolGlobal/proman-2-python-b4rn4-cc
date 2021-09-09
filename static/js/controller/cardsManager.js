@@ -38,14 +38,23 @@ export let cardsManager = {
         //TODO add when the board is open
         await this.loadCards(getBoardId);
         await this.moveCards();
+
     },
 
     createCardsButton: async function () {
         const addCardButtons = await document.querySelectorAll('.board-add');
         for (let addCardButton of addCardButtons) {
             let boardId = addCardButton.dataset['boardId']
-            addCardButton.addEventListener('click', function () {
-                cardsManager.createCards({cardTitle: 'New card'}, {boardId: boardId}, {statusId: '1'})
+            addCardButton.addEventListener('click', async function () {
+                await cardsManager.createCards({cardTitle: 'New card'}, {boardId: boardId}, {statusId: '1'})
+                let column = this.parentElement.nextElementSibling.firstElementChild
+                let board = column.parentElement
+                if (column) {
+                    await clearBoard(board)
+                    await cardsManager.loadCards(boardId);
+                } else {
+                    await cardsManager.loadCards(boardId);
+                }
             })
         }
     },
@@ -55,5 +64,18 @@ export let cardsManager = {
     }
 };
 
-function deleteButtonHandler(clickEvent) {
+
+async function deleteButtonHandler(clickEvent) {
+    const card = clickEvent.target.parentElement.parentElement;
+    const cardId = card.dataset.cardId;
+    await dataHandler.deleteCard(cardId)
+    const board = clickEvent.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement
+    const boardId = board.dataset.boardId
+    await clearBoard(board)
+    await cardsManager.loadCards(boardId)
 }
+
+async function clearBoard(board){
+    board.innerHTML = ""
+}
+

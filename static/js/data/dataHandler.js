@@ -17,8 +17,10 @@ export let dataHandler = {
         const response = await apiGet(`/api/boards/${boardId}/cards/`);
         return response;
     },
-    getCard: async function (cardId) {
+    getCards: async function () {
         // the card is retrieved and then the callback function is called with the card
+        const response = await apiGet('/api/cards')
+        return response
     },
     createNewBoard: async function (boardTitle) {
         // creates new board, saves it and calls the callback function with its data
@@ -30,6 +32,12 @@ export let dataHandler = {
     },
     updateBoardName: async function (boardId, boardTitle) {
         await apiPost(`/api/boards/${boardId}/update`, boardTitle)
+    },
+    deleteBoard: async function (boardId) {
+        await apiGet(`/api/boards/${boardId}/delete`)
+    },
+    deleteCard: async function (cardId) {
+        await apiGet(`/api/cards/${cardId}/delete`)
     }
 };
 
