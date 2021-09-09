@@ -57,7 +57,6 @@ def validate_login():
     username = [user["user_name"] for user in users]
     if user_login in username:
         stored_pw = queires.get_password_by_username(user_login)[0]['password']
-        print(stored_pw)
         if data_manager.verify_password(user_password, stored_pw):
             session['user'] = user_login
             return redirect('/')
