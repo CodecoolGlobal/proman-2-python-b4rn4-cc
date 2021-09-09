@@ -144,11 +144,13 @@ def delete_card(card_id):
     queires.delete_card(card_id)
 
 
-@app.route('/api/cards/<card_id>/update')
+@app.route('/api/cards/<card_id>/update/position', methods=['POST'])
 @json_response
 def update_card_position(card_id):
-    card_status = request.get_json()['cardStatusId']
-    card_order = request.get_json()['cardOrder']
+    response = request.get_json()
+    card_status = response['cardStatusId']
+    card_order = response['cardOrder']
+    queires.update_card_position(card_id, card_status, card_order)
 
 
 def main():

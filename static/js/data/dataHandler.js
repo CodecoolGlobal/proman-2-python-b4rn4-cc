@@ -48,7 +48,7 @@ export let dataHandler = {
     },
     updateCardPosition: async function (cardId, cardStatusId, cardOrder) {
         const payload = {cardStatusId: cardStatusId, cardOrder: cardOrder}
-        await apiPost(`/api/cards/${cardId}/update`, payload)
+        await apiPost(`/api/cards/${cardId}/update/position`, payload)
     }
 };
 
