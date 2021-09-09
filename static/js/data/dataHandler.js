@@ -8,7 +8,8 @@ export let dataHandler = {
     },
     getStatuses: async function (boardId) {
         // the statuses are retrieved and then the callback function is called with the statuses
-        return await apiGet(`/api/statuses/${boardId}`);
+        const response = await apiGet(`/api/statuses/${boardId}`);
+        return response
     },
     getStatus: async function (statusId) {
         // the status is retrieved and then the callback function is called with the status

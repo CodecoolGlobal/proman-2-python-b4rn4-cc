@@ -24,7 +24,8 @@ def index():
 @app.route("/api/statuses/<board_id>")
 @json_response
 def get_statuses(board_id):
-    return queires.get_statuses(board_id)
+    get_board_id = int(board_id)
+    return queires.get_statuses(get_board_id)
 
 
 @app.route("/registration", methods=["POST"])

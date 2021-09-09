@@ -142,8 +142,9 @@ def new_user(user_name, password):
 
 
 def get_statuses(board_id):
-    return data_manager.execute_select(
+    statuses = data_manager.execute_select(
         """SELECT * 
         FROM statuses
-        WHERE board_id = 'default' OR board_id = %(board_id)s""",
-        variables={'board_id': board_id})
+        WHERE boards_id = %(board_id)s OR boards_id = 0
+        """, variables={'board_id': board_id})
+    return statuses
