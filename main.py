@@ -21,10 +21,10 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/api/statuses")
+@app.route("/api/statuses/<board_id>")
 @json_response
-def get_statuses():
-    return queires.get_statuses()
+def get_statuses(board_id):
+    return queires.get_statuses(board_id)
 
 
 @app.route("/registration", methods=["POST"])
