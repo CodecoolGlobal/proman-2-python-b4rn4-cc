@@ -6,7 +6,6 @@ export let cardsManager = {
     loadCards: async function (boardId) {
         const cards = await dataHandler.getCardsByBoardId(boardId);
         const columns = await dataHandler.getStatuses(boardId);
-        console.log(columns)
         for (let column of columns) {
             const columnBuilder = htmlFactory(htmlTemplates.column);
             const colContent = columnBuilder(column);
@@ -59,11 +58,20 @@ export let cardsManager = {
     },
     renameCards: async function (boardId) {
         const cards = await dataHandler.getCardsByBoardId(boardId);
-        // console.log(cards);
         cards.forEach((card) => {
             domManager.addEventListener(`.card[data-card-id="${card.id}"`, "click", renameCardHandler);
         });
     },
+    createColumnButton: async function(){
+        const boards = await dataHandler.getBoards();
+        boards.forEach((board) => {
+            domManager.addEventListener(
+                `.create-column[data-board-id="${board.id}"`,
+                "click",
+                addColumn
+            )
+        })
+    }
 };
 
 
@@ -109,4 +117,14 @@ async function saveCardRenameHandler(clickEvent) {
     card.firstElementChild.style.display = "block";
     card.firstElementChild.innerText = newCardTitle;
     domManager.addEventListener(`.card[data-card-id="${cardId}"`, "click", renameCardHandler)
+}
+
+async function addColumn(clickEvent){
+    const boardId = clickEvent.target.dataset.boardId
+    const board = clickEvent.target.parentElement.nextElementSibling
+    console.log(board)
+    const statusTitle = 'New Status'
+    await dataHandler.addStatus(boardId, statusTitle)
+    await clearBoard(board)
+    await cardsManager.loadCards(boardId)
 }

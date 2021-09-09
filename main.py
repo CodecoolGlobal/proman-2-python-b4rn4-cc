@@ -28,6 +28,11 @@ def get_statuses(board_id):
     return queires.get_statuses(get_board_id)
 
 
+@app.route("/api/statuses/<int:board_id>/create", methods=["POST"])
+@json_response
+def add_new_status(board_id):
+    status_title = request.get_json()
+    queires.add_status(board_id, status_title)
 @app.route("/registration", methods=["POST"])
 def registration():
     user_name = request.form.get('user_name')

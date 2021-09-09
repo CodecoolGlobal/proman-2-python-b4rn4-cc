@@ -11,6 +11,9 @@ export let dataHandler = {
         const response = await apiGet(`/api/statuses/${boardId}`);
         return response
     },
+    addStatus: async function (boardId, statusTitle) {
+        return await apiPost(`/api/statuses/${boardId}/create`, statusTitle)
+    },
     getStatus: async function (statusId) {
         // the status is retrieved and then the callback function is called with the status
     },

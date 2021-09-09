@@ -8,6 +8,7 @@ async function init() {
     await boardsManager.saveBoardRename();
     await boardsManager.deleteBoardButton();
     await cardsManager.createCardsButton();
+    await cardsManager.createColumnButton();
     await displayRegModal();
 
 
