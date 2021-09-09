@@ -21,25 +21,6 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/api/boards")
-@json_response
-def get_boards():
-    """
-    All the boards
-    """
-    return queires.get_boards()
-
-
-@app.route("/api/boards/<int:board_id>/cards/")
-@json_response
-def get_cards_for_board(board_id: int):
-    """
-    All cards that belongs to a board
-    :param board_id: id of the parent board
-    """
-    return queires.get_cards_for_board(board_id)
-
-
 @app.route("/api/statuses")
 @json_response
 def get_statuses():
@@ -84,6 +65,15 @@ def logout():
     return redirect('/')
 
 
+@app.route("/api/boards")
+@json_response
+def get_boards():
+    """
+    All the boards
+    """
+    return queires.get_boards()
+
+
 @app.route("/api/boards/create", methods=["POST"])
 @json_response
 def create_boards():
@@ -106,11 +96,33 @@ def delete_board(board_id):
     queires.delete_board(board_id)
 
 
+@app.route("/api/boards/<int:board_id>/cards/")
+@json_response
+def get_cards_for_board(board_id: int):
+    """
+    All cards that belongs to a board
+    :param board_id: id of the parent board
+    """
+    return queires.get_cards_for_board(board_id)
+
+
 @app.route('/api/boards/<int:board_id>/cards/create', methods=['POST'])
 @json_response
 def create_cards(board_id):
     card_name = request.get_json()["cardTitle"]
     queires.create_card(card_name, board_id)
+
+
+@app.route('/api/cards')
+@json_response
+def get_cards():
+    return queires.get_cards()
+
+
+@app.route('/api/cards/<card_id>/delete')
+@json_response
+def delete_card(card_id):
+    queires.delete_card(card_id)
 
 
 def main():
