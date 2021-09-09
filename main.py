@@ -21,25 +21,6 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/api/boards")
-@json_response
-def get_boards():
-    """
-    All the boards
-    """
-    return queires.get_boards()
-
-
-@app.route("/api/boards/<int:board_id>/cards/")
-@json_response
-def get_cards_for_board(board_id: int):
-    """
-    All cards that belongs to a board
-    :param board_id: id of the parent board
-    """
-    return queires.get_cards_for_board(board_id)
-
-
 @app.route("/api/statuses")
 @json_response
 def get_statuses():
@@ -84,11 +65,24 @@ def logout():
     return redirect('/')
 
 
+@app.route("/api/boards")
+@json_response
+def get_boards():
+    if session:
+        user_name = session['user']
+        return queires.get_boards(user_name)
+    return queires.get_boards()
+
+
 @app.route("/api/boards/create", methods=["POST"])
 @json_response
 def create_boards():
+    if session:
+        user_name = session['user']
+    else:
+        user_name = 'public'
     data = request.get_json()["boardTitle"]
-    queires.create_board(data)
+    queires.create_board(data, user_name)
     # return data
 
 
@@ -104,6 +98,21 @@ def update_board(board_id):
 def update_card(card_id):
     card_name = request.get_json()
     queires.update_card_title(card_name, card_id)
+@app.route('/api/boards/<int:board_id>/delete')
+@json_response
+def delete_board(board_id):
+    queires.delete_cards_by_board(board_id)
+    queires.delete_board(board_id)
+
+
+@app.route("/api/boards/<int:board_id>/cards/")
+@json_response
+def get_cards_for_board(board_id: int):
+    """
+    All cards that belongs to a board
+    :param board_id: id of the parent board
+    """
+    return queires.get_cards_for_board(board_id)
 
 
 @app.route('/api/boards/<int:board_id>/cards/create', methods=['POST'])
@@ -113,14 +122,24 @@ def create_cards(board_id):
     queires.create_card(card_name, board_id)
 
 
+@app.route('/api/cards')
+@json_response
+def get_cards():
+    return queires.get_cards()
+
+
+@app.route('/api/cards/<card_id>/delete')
+@json_response
+def delete_card(card_id):
+    queires.delete_card(card_id)
+
+
 def main():
     app.run(debug=True)
 
     # Serving the favicon
     with app.app_context():
         app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon/favicon.ico'))
-
-
 
 
 if __name__ == '__main__':

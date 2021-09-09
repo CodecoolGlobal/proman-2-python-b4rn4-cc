@@ -32,7 +32,8 @@ CREATE TABLE statuses (
 
 CREATE TABLE boards (
     id          SERIAL PRIMARY KEY  NOT NULL,
-    title       VARCHAR(200)        NOT NULL
+    title       VARCHAR(200)        NOT NULL,
+    user_name   VARCHAR(200)
 );
 
 CREATE TABLE cards (
@@ -52,8 +53,8 @@ INSERT INTO statuses(title) VALUES ('in progress');
 INSERT INTO statuses(title) VALUES ('testing');
 INSERT INTO statuses(title) VALUES ('done');
 
-INSERT INTO boards(title) VALUES ('Board 1');
-INSERT INTO boards(title) VALUES ('Board 2');
+INSERT INTO boards(title, user_name) VALUES ('Board 1', 'public');
+INSERT INTO boards(title, user_name) VALUES ('Board 2', 'public');
 
 INSERT INTO cards VALUES (nextval('cards_id_seq'), 1, 1, 'new card 1', 1);
 INSERT INTO cards VALUES (nextval('cards_id_seq'), 1, 1, 'new card 2', 2);

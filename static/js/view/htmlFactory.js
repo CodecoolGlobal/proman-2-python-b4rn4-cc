@@ -30,6 +30,7 @@ function boardBuilder(board) {
                     <input class="board-rename-field" data-board-id=${board.id} value="${board.title}">
                     <button class="board-save-button" data-board-id=${board.id}>Save</button>
                     <button class="board-add" data-board-id=${board.id}>Add Card</button>
+                    <button class="delete-board" data-board-id="${board.id}">Delete Board</button>
                     <button class="toggle-board-button" data-board-id="${board.id}"><i class="fas fa-chevron-down"></i></button>
                 </div>
                 <div class="board-columns" data-board-id="${board.id}">
@@ -43,7 +44,12 @@ function cardBuilder(card) {
 }
 
 function columnBuilder(column) {
-    return `<div class="board-column"><div class="board-column-title" data-status-id="${column.id}">${column.title}<div class="board-column-content"></div></div></div>`;
+    return `<div class="board-column">
+                <div class="board-column-title" data-status-id="${column.id}">
+                    ${column.title}
+                    <div class="board-column-content"></div>
+                </div>
+            </div>`;
 }
 
 function cardRenameBuilder(cardElement) {

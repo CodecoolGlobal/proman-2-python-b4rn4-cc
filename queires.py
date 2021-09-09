@@ -19,7 +19,7 @@ def get_card_status(status_id):
     return status
 
 
-def get_boards():
+def get_boards(user_name='public'):
     """
     Gather all boards
     :return:
@@ -29,9 +29,11 @@ def get_boards():
     return data_manager.execute_select(
         """
         SELECT * FROM boards
+        WHERE user_name = %(user_name)s OR user_name = 'public'
         ORDER BY id
         ;
-        """
+        """,
+        variables={'user_name': user_name}
     )
 
 
@@ -49,11 +51,12 @@ def get_cards_for_board(board_id):
     return matching_cards
 
 
-def create_board(board_name):
+def create_board(board_name, user_name):
     return data_manager.execute_insert("""
     INSERT INTO boards
-    (title)
-    VALUES (%(board_name)s)""", {"board_name": board_name})
+    (title, user_name)
+    VALUES (%(board_name)s, %(user_name)s)""", {"board_name": board_name,
+                                                "user_name": user_name})
 
 
 def update_board_title(board_name, board_id):
@@ -62,6 +65,14 @@ def update_board_title(board_name, board_id):
         SET title = %(board_name)s
         WHERE id = %(board_id)s;
     """, {"board_name": board_name, "board_id": board_id})
+
+
+def delete_board(board_id):
+    return data_manager.execute_insert(
+        """DELETE FROM boards
+        WHERE id = %(board_id)s""",
+        variables={'board_id': board_id}
+    )
 
 
 def create_card(card_name, board_id):
@@ -83,6 +94,44 @@ def update_card_title(card_name, card_id):
     WHERE id = %(id)s;
     """, {"new_title": card_name,
           "id": card_id})
+
+
+# def get_cards_for_board(board_id):
+#     # remove this code once you implement the database
+#
+#     matching_cards = data_manager.execute_select(
+#         """
+#         SELECT * FROM cards
+#         WHERE cards.board_id = %(board_id)s
+#         ;
+#         """
+#         , {"board_id": board_id})
+#
+#     return matching_cards
+
+
+def delete_cards_by_board(board_id):
+    return data_manager.execute_insert(
+        """DELETE FROM cards 
+        WHERE board_id = %(board_id)s""",
+        variables={"board_id": board_id}
+    )
+
+
+def get_cards():
+    return data_manager.execute_select(
+        """SELECT *
+        FROM cards"""
+    )
+
+
+def delete_card(card_id):
+    return data_manager.execute_insert(
+        """DELETE FROM cards
+            WHERE id = %(card_id)s
+        """,
+        variables={"card_id": card_id}
+    )
 
 
 def list_users():
