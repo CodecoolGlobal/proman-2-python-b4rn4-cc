@@ -19,7 +19,7 @@ def get_card_status(status_id):
     return status
 
 
-def get_boards():
+def get_boards(user_name='public'):
     """
     Gather all boards
     :return:
@@ -29,17 +29,20 @@ def get_boards():
     return data_manager.execute_select(
         """
         SELECT * FROM boards
+        WHERE user_name = %(user_name)s OR user_name = 'public'
         ORDER BY id
         ;
-        """
+        """,
+        variables={'user_name': user_name}
     )
 
 
-def create_board(board_name):
+def create_board(board_name, user_name):
     return data_manager.execute_insert("""
     INSERT INTO boards
-    (title)
-    VALUES (%(board_name)s)""", {"board_name": board_name})
+    (title, user_name)
+    VALUES (%(board_name)s, %(user_name)s)""", {"board_name": board_name,
+                                                "user_name": user_name})
 
 
 def update_board_title(board_name, board_id):
