@@ -112,6 +112,7 @@ def update_card(card_id):
 def delete_board(board_id):
     queires.delete_cards_by_board(board_id)
     queires.delete_board(board_id)
+    queires.delete_status(board_id)
 
 
 @app.route("/api/boards/<int:board_id>/cards/")
