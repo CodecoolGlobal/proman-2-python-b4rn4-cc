@@ -104,11 +104,14 @@ def update_board(board_id):
 def update_card(card_id):
     card_name = request.get_json()
     queires.update_card_title(card_name, card_id)
+
+
 @app.route('/api/boards/<int:board_id>/delete')
 @json_response
 def delete_board(board_id):
     queires.delete_cards_by_board(board_id)
     queires.delete_board(board_id)
+    queires.delete_status(board_id)
 
 
 @app.route("/api/boards/<int:board_id>/cards/")

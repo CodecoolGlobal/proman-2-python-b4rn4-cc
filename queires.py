@@ -182,3 +182,12 @@ def add_status(board_id, status_title):
         variables={"title": status_title,
                    "board_id": board_id}
     )
+
+
+def delete_status(board_id):
+    return data_manager.execute_insert(
+        """DELETE FROM statuses
+        WHERE boards_id = %(board_id)s
+        """,
+        variables={"board_id": board_id}
+    )
