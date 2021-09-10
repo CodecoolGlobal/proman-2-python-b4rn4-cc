@@ -191,3 +191,13 @@ def delete_status(board_id):
         """,
         variables={"board_id": board_id}
     )
+
+
+def update_card_position(card_id, card_status, card_order):
+    return data_manager.execute_insert(
+        """UPDATE cards
+    SET status_id = %(status)s, card_order = %(order)s
+    WHERE id = %(id)s;
+    """, {"status": card_status,
+          "id": card_id,
+          "order": card_order})
