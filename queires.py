@@ -75,9 +75,7 @@ def delete_board(board_id):
     )
 
 
-def create_card(card_name, board_id):
-    status_id = 1
-    card_order = 1
+def create_card(card_name, board_id, status_id, card_order):
     return data_manager.execute_insert("""
     INSERT INTO cards
     (title, board_id, status_id, card_order)
