@@ -10,6 +10,9 @@ export let cardsManager = {
             const columnBuilder = htmlFactory(htmlTemplates.column);
             const colContent = columnBuilder(column);
             domManager.addChild(`.board-columns[data-board-id="${boardId}"`, colContent);
+            domManager.addEventListener(`.column-remove[data-status-id="${column.id}"]`, "click", async function (){
+                await columnRemove(column.id)
+            })
         }
         for (let card of cards) {
             const cardBuilder = htmlFactory(htmlTemplates.card);
@@ -63,12 +66,14 @@ export let cardsManager = {
             });
         }
     },
+
     renameCards: async function (boardId) {
         const cards = await dataHandler.getCardsByBoardId(boardId);
         cards.forEach((card) => {
             domManager.addEventListener(`.card[data-card-id="${card.id}"`, "click", renameCardHandler);
         });
     },
+
     createColumnButton: async function () {
         const boards = await dataHandler.getBoards();
         boards.forEach((board) => {
@@ -191,7 +196,7 @@ function dragOver(clickEvent) {
     clickEvent.preventDefault();
 }
 
-async function drop (clickEvent) {
+async function drop(clickEvent) {
     console.log('drop')
     clickEvent.preventDefault()
     const column = clickEvent.currentTarget
@@ -203,9 +208,9 @@ async function drop (clickEvent) {
     const cardBoardId = dragging.dataset.boardId
     console.log(cardBoardId)
     console.log(boardId)
-    if (boardId === cardBoardId){
+    if (boardId === cardBoardId) {
         if (cardCurrentStatus !== columnStatus) {
-        dragging.dataset.cardStatus = columnStatus
+            dragging.dataset.cardStatus = columnStatus
         }
         if (afterElement == null) {
             column.appendChild(dragging)
@@ -242,11 +247,11 @@ async function addColumn(clickEvent) {
     await cardsManager.columnsContainer(boardId);
 }
 
-function reArrangePastColumn () {
+function reArrangePastColumn() {
     // for next sprint !!!
 }
 
-async function reArrangePresentColumn (columnChildren) {
+async function reArrangePresentColumn(columnChildren) {
     let i = 1
     for (let columnChild of columnChildren) {
         columnChild.dataset.cardOrder = `${i}`;
@@ -258,6 +263,11 @@ async function reArrangePresentColumn (columnChildren) {
     }
 }
 
+async function columnRemove(columnId){
+    await dataHandler.deleteColumn(columnId)
+    const board = document.querySelector(`.board-column-title[data-status-id="${columnId}"]`)
+    board.parentElement.remove()
+}
 
 // <div class="board-column-title" data-status-id="4">
 //

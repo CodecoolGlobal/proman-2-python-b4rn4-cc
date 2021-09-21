@@ -35,6 +35,12 @@ def add_new_status(board_id):
     queires.add_status(board_id, status_title)
 
 
+@app.route("/api/statuses/<int:status_id>/delete")
+@json_response
+def delete_status(status_id):
+    queires.delete_status(status_id)
+
+
 @app.route("/registration", methods=["POST"])
 def registration():
     user_name = request.form.get('user_name')
@@ -112,7 +118,7 @@ def update_card(card_id):
 def delete_board(board_id):
     queires.delete_cards_by_board(board_id)
     queires.delete_board(board_id)
-    queires.delete_status(board_id)
+    queires.delete_status_by_board_id(board_id)
 
 
 @app.route("/api/boards/<int:board_id>/cards/")

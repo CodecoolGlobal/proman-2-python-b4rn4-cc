@@ -48,6 +48,7 @@ function columnBuilder(column) {
     return `<div class="board-column">
                 <div class="board-column-title" data-status-id="${column.id}">
                     ${column.title}
+                    <span class="column-remove" data-status-id="${column.id}"><i class="fas fa-trash-alt"></i> </span>
                     <div class="board-column-content"></div>
                 </div>
             </div>`;

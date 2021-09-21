@@ -14,6 +14,10 @@ export let dataHandler = {
     addStatus: async function (boardId, statusTitle) {
         return await apiPost(`/api/statuses/${boardId}/create`, statusTitle)
     },
+    deleteColumn: async function (statusId){
+        const response = await apiGet(`/api/statuses/${statusId}/delete`);
+        return response
+    },
     getStatus: async function (statusId) {
         // the status is retrieved and then the callback function is called with the status
     },
