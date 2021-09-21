@@ -36,9 +36,12 @@ export let cardsManager = {
         }
     },
 
-    createCards: async function (cardTitle, boardId) {
-        let getBoardId = await boardId['boardId'];
-        await dataHandler.createNewCard(cardTitle, getBoardId);
+    createCards: async function (cardTitle, boardId, statusId, cardOrder) {
+        const getBoardId = boardId['boardId'];
+        const getCardTitle = cardTitle['cardTitle']
+        const getStatusId = statusId['statusId']
+        const getCardOrder = cardOrder['cardOrder']
+        await dataHandler.createNewCard(getCardTitle, getBoardId, getStatusId, getCardOrder);
         //TODO add when the board is open
         //await this.loadCards(getBoardId);
         //await this.columnsContainer(getBoardId)
@@ -50,7 +53,9 @@ export let cardsManager = {
         for (let addCardButton of addCardButtons) {
             let boardId = addCardButton.dataset['boardId'];
             addCardButton.addEventListener('click', async function () {
-                await cardsManager.createCards({cardTitle: 'New card'}, {boardId: boardId}, {statusId: '1'});
+                const lastCardOrder = await getLastCardOrderForBoard(boardId)
+                console.log(lastCardOrder)
+                await cardsManager.createCards({cardTitle: 'New card'}, {boardId: boardId}, {statusId: '1'}, {cardOrder: `${lastCardOrder+1}`});
                 let column = await this.parentElement.nextElementSibling.firstElementChild;
                 let board = document.querySelector(`.board-columns[data-board-id="${boardId}"]`);
                 if (column) {
@@ -267,6 +272,18 @@ async function columnRemove(columnId){
     await dataHandler.deleteColumn(columnId)
     const board = document.querySelector(`.board-column-title[data-status-id="${columnId}"]`)
     board.parentElement.remove()
+}
+
+
+async function getLastCardOrderForBoard (boardId) {
+    let lastCardId = 0
+    const cards = await dataHandler.getCardsByBoardId(boardId)
+    for (let card of cards) {
+        if (card.id > lastCardId) {
+            lastCardId = card.card_order
+        }
+    }
+    return lastCardId
 }
 
 // <div class="board-column-title" data-status-id="4">

@@ -134,8 +134,11 @@ def get_cards_for_board(board_id: int):
 @app.route('/api/boards/<int:board_id>/cards/create', methods=['POST'])
 @json_response
 def create_cards(board_id):
-    card_name = request.get_json()["cardTitle"]
-    queires.create_card(card_name, board_id)
+    print(request.get_json())
+    card_name = request.get_json()['cardTitle']
+    card_status = request.get_json()['statusId']
+    card_order = request.get_json()['cardOrder']
+    queires.create_card(card_name, board_id, card_status, card_order)
 
 
 @app.route('/api/cards')
