@@ -132,6 +132,16 @@ def delete_card(card_id):
     )
 
 
+def delete_card_by_status_id(status_id):
+    return data_manager.execute_insert(
+        """
+            DELETE FROM cards
+            WHERE status_id = %(status_id)s
+        """,
+        variables={"status_id": status_id}
+   )
+
+
 def list_users():
     users = data_manager.execute_select(
         """SELECT *
