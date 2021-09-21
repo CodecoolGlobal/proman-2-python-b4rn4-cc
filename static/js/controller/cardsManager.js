@@ -54,7 +54,6 @@ export let cardsManager = {
             let boardId = addCardButton.dataset['boardId'];
             addCardButton.addEventListener('click', async function () {
                 const lastCardOrder = await getLastCardOrderForBoard(boardId)
-                console.log(lastCardOrder)
                 await cardsManager.createCards({cardTitle: 'New card'}, {boardId: boardId}, {statusId: '1'}, {cardOrder: `${lastCardOrder+1}`});
                 let column = await this.parentElement.nextElementSibling.firstElementChild;
                 let board = document.querySelector(`.board-columns[data-board-id="${boardId}"]`);
