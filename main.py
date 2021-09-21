@@ -38,6 +38,7 @@ def add_new_status(board_id):
 @app.route("/api/statuses/<int:status_id>/delete")
 @json_response
 def delete_status(status_id):
+    queires.delete_card_by_status_id(status_id)
     queires.delete_status(status_id)
 
 
