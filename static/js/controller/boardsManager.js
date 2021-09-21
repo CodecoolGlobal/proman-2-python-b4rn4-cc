@@ -54,28 +54,64 @@ export let boardsManager = {
         });
     },
 
-    deleteBoardButton: async function (){
+    deleteBoardButton: async function () {
         const boards = await dataHandler.getBoards();
         boards.forEach((board) => {
             domManager.addEventListener(
                 `.delete-board[data-board-id="${board.id}"]`,
                 "click",
                 deleteBoard
-
             );
+        });
+    },
+
+    renameColumn: function () {
+        const titleDiv = document.querySelectorAll(".board-column-title div[data-type='title']");
+        titleDiv.forEach((column) => {
+            domManager.addEventListener(`.board-column-title[data-board-id="${column.parentElement.dataset.boardId}"][data-status-id="${column.parentElement.dataset.statusId}"] div[data-type="title"]`,
+                "click", renameColumnHandler);
         });
     }
 };
 
+
+function renameColumnHandler(e) {
+    const titleDiv = e.target;
+    const oldTitle = titleDiv.innerText;
+    const span = document.createElement('span');
+    const inputField = document.createElement('input');
+    const saveButton = document.createElement('button');
+
+    saveButton.innerText = 'Save';
+    inputField.setAttribute('value', oldTitle);
+    span.append(inputField, saveButton);
+    titleDiv.parentElement.insertAdjacentElement('afterbegin', span);
+    titleDiv.parentElement.removeChild(titleDiv);
+    saveButton.addEventListener('click', saveColRename);
+}
+
+async function saveColRename(e) {
+    const inputField = e.target.previousElementSibling;
+    const parent = inputField.parentElement.parentElement;
+    const newTitle = inputField.value;
+    const titleDiv = document.createElement("div");
+    titleDiv.dataset.type = "title"
+    titleDiv.innerText = newTitle;
+    parent.firstElementChild.remove();
+    parent.insertAdjacentElement('afterbegin', titleDiv);
+    await dataHandler.updateColumnName(parent.dataset.statusId, parent.dataset.boardId, newTitle);
+}
+
 async function showHideButtonHandler(clickEvent) {
     const boardId = clickEvent.currentTarget.dataset.boardId;
-    const column = clickEvent.currentTarget.parentElement.nextElementSibling.firstElementChild
+    const column = clickEvent.currentTarget.parentElement.nextElementSibling.firstElementChild;
     if (column) {
         await cardsManager.unLoadCards(column);
     } else {
         await cardsManager.loadCards(boardId);
-        await cardsManager.columnsContainer(boardId)
+        await cardsManager.columnsContainer(boardId);
         await cardsManager.moveCards(boardId);
+        boardsManager.renameColumn();
     }
 }
 
@@ -107,17 +143,17 @@ function removeBoards() {
     }
 }
 
-async function deleteBoard(clickEvent){
+async function deleteBoard(clickEvent) {
     const board = clickEvent.target;
     const boardId = board.dataset.boardId;
-    await dataHandler.deleteBoard(boardId)
-    await clearRoot()
-    await boardsManager.loadBoards()
-    await cardsManager.columnsContainer(boardId)
-    await cardsManager.moveCards(boardId)
+    await dataHandler.deleteBoard(boardId);
+    await clearRoot();
+    await boardsManager.loadBoards();
+    await cardsManager.columnsContainer(boardId);
+    await cardsManager.moveCards(boardId);
 }
 
-async function clearRoot(){
+async function clearRoot() {
     let root = await document.getElementById("root");
-    root.innerHTML = ""
+    root.innerHTML = "";
 }
