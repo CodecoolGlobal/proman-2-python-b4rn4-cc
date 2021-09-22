@@ -75,9 +75,7 @@ def delete_board(board_id):
     )
 
 
-def create_card(card_name, board_id):
-    status_id = 1
-    card_order = 1
+def create_card(card_name, board_id, status_id, card_order):
     return data_manager.execute_insert("""
     INSERT INTO cards
     (title, board_id, status_id, card_order)
@@ -143,6 +141,16 @@ def delete_card(card_id):
     )
 
 
+def delete_card_by_status_id(status_id):
+    return data_manager.execute_insert(
+        """
+            DELETE FROM cards
+            WHERE status_id = %(status_id)s
+        """,
+        variables={"status_id": status_id}
+   )
+
+
 def list_users():
     users = data_manager.execute_select(
         """SELECT *
@@ -193,12 +201,20 @@ def add_status(board_id, status_title):
     )
 
 
-def delete_status(board_id):
+def delete_status_by_board_id(board_id):
     return data_manager.execute_insert(
         """DELETE FROM statuses
         WHERE boards_id = %(board_id)s
         """,
         variables={"board_id": board_id}
+    )
+
+
+def delete_status(status_id):
+    return data_manager.execute_insert(
+        """DELETE FROM statuses
+        WHERE id = %(status_id)s""",
+        variables={"status_id": status_id}
     )
 
 

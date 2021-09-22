@@ -14,6 +14,10 @@ export let dataHandler = {
     addStatus: async function (boardId, statusTitle) {
         return await apiPost(`/api/statuses/${boardId}/create`, statusTitle)
     },
+    deleteColumn: async function (statusId){
+        const response = await apiGet(`/api/statuses/${statusId}/delete`);
+        return response
+    },
     getStatus: async function (statusId) {
         // the status is retrieved and then the callback function is called with the status
     },
@@ -30,9 +34,10 @@ export let dataHandler = {
         // creates new board, saves it and calls the callback function with its data
         await apiPost("/api/boards/create", boardTitle);
     },
-    createNewCard: async function (cardTitle, boardId) {
+    createNewCard: async function (cardTitle, boardId, statusId, cardOrder) {
         // creates new card, saves it and calls the callback function with its data
-        await apiPost(`/api/boards/${boardId}/cards/create`, cardTitle);
+        const payload = {cardTitle, statusId, cardOrder}
+        await apiPost(`/api/boards/${boardId}/cards/create`, payload);
     },
     updateBoardName: async function (boardId, boardTitle) {
         await apiPost(`/api/boards/${boardId}/update`, boardTitle);
