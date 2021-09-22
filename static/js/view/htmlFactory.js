@@ -46,8 +46,8 @@ function cardBuilder(card) {
 
 function columnBuilder(column) {
     return `<div class="board-column">
-                <div class="board-column-title" data-status-id="${column.id}">
-                    ${column.title}
+                <div class="board-column-title" data-board-id="${column.boards_id}" data-status-id="${column.id}">
+                    <div data-type="title">${column.title}</div>
                     <span class="column-remove" data-status-id="${column.id}"><i class="fas fa-trash-alt"></i> </span>
                     <div class="board-column-content"></div>
                 </div>

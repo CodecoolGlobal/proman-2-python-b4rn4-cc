@@ -54,6 +54,9 @@ export let dataHandler = {
     updateCardPosition: async function (cardId, cardStatusId, cardOrder) {
         const payload = {cardStatusId: cardStatusId, cardOrder: cardOrder}
         await apiPost(`/api/cards/${cardId}/update/position`, payload)
+    },
+    updateColumnName: async function (colId, boardId, columnName) {
+        await apiPut(`/api/${boardId}/columns/${colId}/update`, columnName)
     }
 };
 
@@ -84,5 +87,16 @@ async function apiPost(url, payload) {
 async function apiDelete(url) {
 }
 
-async function apiPut(url) {
+async function apiPut(url, payload) {
+    let response = await fetch(url, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+    });
+    if (response.ok) {
+        return response.json();
+    }
 }
