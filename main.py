@@ -7,15 +7,12 @@ from util import json_response
 import mimetypes
 import queires
 
-import os
-import psycopg2
 
-connection_string = os.environ.get('DATABASE_URL')
-connection = psycopg2.connect(connection_string)
 mimetypes.add_type('application/javascript', '.js')
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 load_dotenv()
+COLUMN_HEADERS = ['new', 'in progress', 'testing', 'done']
 
 
 @app.route("/")
@@ -102,8 +99,8 @@ def create_boards():
         user_name = 'public'
     data = request.get_json()["boardTitle"]
     board_id = queires.create_board(data, user_name)['id']
-    #TODO query for loop
-    # return data
+    for header in COLUMN_HEADERS:
+        queires.add_status(board_id, header)
 
 
 @app.route('/api/boards/<int:board_id>/update', methods=['POST'])
