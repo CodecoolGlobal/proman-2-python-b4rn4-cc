@@ -93,7 +93,7 @@ def get_boards():
     return queires.get_boards()
 
 
-@app.route("/api/boards/create", methods=["POST"])
+@app.route("/api/boards/create", methods=["PUT"])
 @json_response
 def create_boards():
     if session:
@@ -101,7 +101,8 @@ def create_boards():
     else:
         user_name = 'public'
     data = request.get_json()["boardTitle"]
-    queires.create_board(data, user_name)
+    board_id = queires.create_board(data, user_name)['id']
+    #TODO query for loop
     # return data
 
 

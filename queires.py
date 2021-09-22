@@ -52,11 +52,11 @@ def get_cards_for_board(board_id):
 
 
 def create_board(board_name, user_name):
-    return data_manager.execute_insert("""
+    return data_manager.execute_select("""
     INSERT INTO boards
     (title, user_name)
-    VALUES (%(board_name)s, %(user_name)s)""", {"board_name": board_name,
-                                                "user_name": user_name})
+    VALUES (%(board_name)s, %(user_name)s) RETURNING id;""", {"board_name": board_name,
+                                                "user_name": user_name}, fetchall=False)
 
 
 def update_board_title(board_name, board_id):
