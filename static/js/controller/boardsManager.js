@@ -100,6 +100,7 @@ async function saveColRename(e) {
     parent.firstElementChild.remove();
     parent.insertAdjacentElement('afterbegin', titleDiv);
     await dataHandler.updateColumnName(parent.dataset.statusId, parent.dataset.boardId, newTitle);
+    titleDiv.addEventListener('click', renameColumnHandler);
 }
 
 async function showHideButtonHandler(clickEvent) {
