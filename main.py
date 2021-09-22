@@ -167,6 +167,13 @@ def update_card_position(card_id):
     queires.update_card_position(card_id, card_status, card_order)
 
 
+@app.route("/api/<board_id>/columns/<col_id>/update", methods=["PUT"])
+@json_response
+def update_col_name(board_id, col_id):
+    response = request.get_json()
+    return queires.update_status_name(col_id, response)
+
+
 def main():
     app.run(debug=True)
 

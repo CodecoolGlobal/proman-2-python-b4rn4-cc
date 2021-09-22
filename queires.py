@@ -116,6 +116,15 @@ def delete_cards_by_board(board_id):
     )
 
 
+def update_status_name(col_id, title):
+    return data_manager.execute_select("""
+    UPDATE statuses
+    SET title = %(new)s
+    WHERE id = %(s_id)s
+    RETURNING id""", {'new': title,
+                      's_id': col_id})
+
+
 def get_cards():
     return data_manager.execute_select(
         """SELECT *
