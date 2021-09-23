@@ -198,7 +198,6 @@ function dragOver(clickEvent) {
 }
 
 async function drop(clickEvent) {
-    console.log('drop');
     clickEvent.preventDefault();
     const column = clickEvent.currentTarget;
     const afterElement = getDragAfterElement(column, clickEvent.clientY);
@@ -207,8 +206,6 @@ async function drop(clickEvent) {
     const columnStatus = column.parentElement.dataset.statusId;
     const boardId = column.parentElement.parentElement.parentElement.dataset.boardId;
     const cardBoardId = dragging.dataset.boardId;
-    console.log(cardBoardId);
-    console.log(boardId);
     if (boardId === cardBoardId) {
         if (cardCurrentStatus !== columnStatus) {
             dragging.dataset.cardStatus = columnStatus;
@@ -277,7 +274,3 @@ async function getLastCardOrderForBoard(boardId) {
     }
     return lastCardId;
 }
-
-// <div class="board-column-title" data-status-id="4">
-//
-// <div class="card" draggable="true" data-card-id="6" data-card-status="4" data-card-order="2">
