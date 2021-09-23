@@ -68,8 +68,15 @@ export let boardsManager = {
     renameColumn: function () {
         const titleDiv = document.querySelectorAll(".board-column-title div[data-type='title']");
         titleDiv.forEach((column) => {
-            domManager.addEventListener(`.board-column-title[data-board-id="${column.parentElement.dataset.boardId}"][data-status-id="${column.parentElement.dataset.statusId}"] div[data-type="title"]`,
-                "click", renameColumnHandler);
+            const boardId = column.parentElement.dataset.boardId;
+            const statusId = column.parentElement.dataset.statusId;
+            const titleCont = `.board-column-title[data-board-id="${boardId}"][data-status-id="${statusId}"]`;
+            const title = `div[data-type="title"]`;
+            const targetIdentifier = titleCont + ' ' + title;
+            domManager.addEventListener(
+                targetIdentifier,
+                "click",
+                renameColumnHandler);
         });
     }
 };
@@ -95,7 +102,7 @@ async function saveColRename(e) {
     const parent = inputField.parentElement.parentElement;
     const newTitle = inputField.value;
     const titleDiv = document.createElement("div");
-    titleDiv.dataset.type = "title"
+    titleDiv.dataset.type = "title";
     titleDiv.innerText = newTitle;
     parent.firstElementChild.remove();
     parent.insertAdjacentElement('afterbegin', titleDiv);

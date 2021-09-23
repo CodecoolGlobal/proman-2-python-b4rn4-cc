@@ -6,18 +6,25 @@ export let cardsManager = {
     loadCards: async function (boardId) {
         const cards = await dataHandler.getCardsByBoardId(boardId);
         const columns = await dataHandler.getStatuses(boardId);
+        const columnsContainer = `.board-columns[data-board-id="${boardId}"]`;
         for (let column of columns) {
             const columnBuilder = htmlFactory(htmlTemplates.column);
             const colContent = columnBuilder(column);
-            domManager.addChild(`.board-columns[data-board-id="${boardId}"`, colContent);
-            domManager.addEventListener(`.column-remove[data-status-id="${column.id}"]`, "click", async function (){
-                await columnRemove(column.id)
-            })
+            domManager.addChild(columnsContainer, colContent);
+            domManager.addEventListener(
+                `.column-remove[data-status-id="${column.id}"]`,
+                "click",
+                async function () {
+                    await columnRemove(column.id);
+                });
         }
         for (let card of cards) {
             const cardBuilder = htmlFactory(htmlTemplates.card);
             const content = cardBuilder(card);
-            domManager.addChild(`.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${card.status_id}"] div.board-column-content`, content);
+            const columnIdentifier = `div.board-column div.board-column-title[data-status-id="${card.status_id}"]`;
+            const cardSpace = `div.board-column-content`;
+            const parentIdentifier = columnsContainer + ' ' + columnIdentifier + ' ' + cardSpace;
+            domManager.addChild(parentIdentifier, content);
             domManager.addEventListener(
                 `.card[data-card-id="${card.id}"] div.card-remove`,
                 "click",
@@ -38,14 +45,10 @@ export let cardsManager = {
 
     createCards: async function (cardTitle, boardId, statusId, cardOrder) {
         const getBoardId = boardId['boardId'];
-        const getCardTitle = cardTitle['cardTitle']
-        const getStatusId = statusId['statusId']
-        const getCardOrder = cardOrder['cardOrder']
+        const getCardTitle = cardTitle['cardTitle'];
+        const getStatusId = statusId['statusId'];
+        const getCardOrder = cardOrder['cardOrder'];
         await dataHandler.createNewCard(getCardTitle, getBoardId, getStatusId, getCardOrder);
-        //TODO add when the board is open
-        //await this.loadCards(getBoardId);
-        //await this.columnsContainer(getBoardId)
-        //await this.moveCards(getBoardId)
     },
 
     createCardsButton: async function () {
@@ -53,9 +56,13 @@ export let cardsManager = {
         for (let addCardButton of addCardButtons) {
             let boardId = addCardButton.dataset['boardId'];
             addCardButton.addEventListener('click', async function () {
-                const lastCardOrder = await getLastCardOrderForBoard(boardId)
-                const columnStatusId = addCardButton.parentElement.parentElement.querySelector('.board-column-title').dataset['statusId']
-                await cardsManager.createCards({cardTitle: 'New card'}, {boardId: boardId}, {statusId: columnStatusId}, {cardOrder: `${lastCardOrder+1}`});
+                const lastCardOrder = await getLastCardOrderForBoard(boardId);
+                const columnStatusId = addCardButton.parentElement.parentElement.querySelector('.board-column-title').dataset['statusId'];
+                await cardsManager.createCards(
+                    {cardTitle: 'New card'},
+                    {boardId: boardId},
+                    {statusId: columnStatusId},
+                    {cardOrder: `${lastCardOrder + 1}`});
                 let column = await this.parentElement.nextElementSibling.firstElementChild;
                 let board = document.querySelector(`.board-columns[data-board-id="${boardId}"]`);
                 if (column) {
@@ -75,7 +82,10 @@ export let cardsManager = {
     renameCards: async function (boardId) {
         const cards = await dataHandler.getCardsByBoardId(boardId);
         cards.forEach((card) => {
-            domManager.addEventListener(`.card[data-card-id="${card.id}"`, "click", renameCardHandler);
+            domManager.addEventListener(
+                `.card[data-card-id="${card.id}"`,
+                "click",
+                renameCardHandler);
         });
     },
 
@@ -109,23 +119,27 @@ export let cardsManager = {
     columnsContainer: async function (boardId) {
         const columns = await dataHandler.getStatuses(boardId);
         for (let column of columns) {
+            const columnsContainer = `.board-columns[data-board-id="${boardId}"]`;
+            const columnIdentifier = `div.board-column div.board-column-title[data-status-id="${column.id}"]`;
+            const cardsSpace = `div.board-column-content`;
+            const targetIdentifier  = columnsContainer + ' ' + columnIdentifier + ' ' + cardsSpace;
             domManager.addEventListener(
-                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content`,
+                targetIdentifier,
                 'dragenter',
                 dragEnter
             );
             domManager.addEventListener(
-                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content`,
+                targetIdentifier,
                 'dragleave',
                 dragLeave
             );
             domManager.addEventListener(
-                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content`,
+                targetIdentifier,
                 'dragover',
                 dragOver
             );
             domManager.addEventListener(
-                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content`,
+                targetIdentifier,
                 'drop',
                 drop
             );
@@ -194,7 +208,10 @@ async function saveCardRenameHandler(clickEvent) {
     card.firstElementChild.firstElementChild.remove();
     card.firstElementChild.style.display = "block";
     card.firstElementChild.innerText = newCardTitle;
-    domManager.addEventListener(`.card[data-card-id="${cardId}"]`, "click", renameCardHandler)
+    domManager.addEventListener(
+        `.card[data-card-id="${cardId}"]`,
+        "click",
+        renameCardHandler);
 }
 
 function dragOver(clickEvent) {
@@ -202,28 +219,25 @@ function dragOver(clickEvent) {
 }
 
 async function drop(clickEvent) {
-    console.log('drop')
-    clickEvent.preventDefault()
-    const column = clickEvent.currentTarget
-    const afterElement = getDragAfterElement(column, clickEvent.clientY)
-    const dragging = document.querySelector('.dragging')
-    const cardCurrentStatus = dragging.dataset.cardStatus
-    const columnStatus = column.parentElement.dataset.statusId
-    const boardId = column.parentElement.parentElement.parentElement.dataset.boardId
-    const cardBoardId = dragging.dataset.boardId
-    console.log(cardBoardId)
-    console.log(boardId)
+    clickEvent.preventDefault();
+    const column = clickEvent.currentTarget;
+    const afterElement = getDragAfterElement(column, clickEvent.clientY);
+    const dragging = document.querySelector('.dragging');
+    const cardCurrentStatus = dragging.dataset.cardStatus;
+    const columnStatus = column.parentElement.dataset.statusId;
+    const boardId = column.parentElement.parentElement.parentElement.dataset.boardId;
+    const cardBoardId = dragging.dataset.boardId;
     if (boardId === cardBoardId) {
         if (cardCurrentStatus !== columnStatus) {
-            dragging.dataset.cardStatus = columnStatus
+            dragging.dataset.cardStatus = columnStatus;
         }
         if (afterElement == null) {
-            column.appendChild(dragging)
+            column.appendChild(dragging);
         } else {
-            column.insertBefore(dragging, afterElement)
+            column.insertBefore(dragging, afterElement);
         }
-        const columnChildren = column.childNodes
-        await reArrangePresentColumn(columnChildren)
+        const columnChildren = column.childNodes;
+        await reArrangePresentColumn(columnChildren);
     }
 }
 
@@ -252,12 +266,8 @@ async function addColumn(clickEvent) {
     await cardsManager.columnsContainer(boardId);
 }
 
-function reArrangePastColumn() {
-    // for next sprint !!!
-}
-
 async function reArrangePresentColumn(columnChildren) {
-    let i = 1
+    let i = 1;
     for (let columnChild of columnChildren) {
         columnChild.dataset.cardOrder = `${i}`;
         const cardId = columnChild.dataset.cardId;
@@ -268,24 +278,20 @@ async function reArrangePresentColumn(columnChildren) {
     }
 }
 
-async function columnRemove(columnId){
-    await dataHandler.deleteColumn(columnId)
-    const board = document.querySelector(`.board-column-title[data-status-id="${columnId}"]`)
-    board.parentElement.remove()
+async function columnRemove(columnId) {
+    await dataHandler.deleteColumn(columnId);
+    const board = document.querySelector(`.board-column-title[data-status-id="${columnId}"]`);
+    board.parentElement.remove();
 }
 
 
-async function getLastCardOrderForBoard (boardId) {
-    let lastCardId = 0
-    const cards = await dataHandler.getCardsByBoardId(boardId)
+async function getLastCardOrderForBoard(boardId) {
+    let lastCardId = 0;
+    const cards = await dataHandler.getCardsByBoardId(boardId);
     for (let card of cards) {
         if (card.id > lastCardId) {
-            lastCardId = card.card_order
+            lastCardId = card.card_order;
         }
     }
-    return lastCardId
+    return lastCardId;
 }
-
-// <div class="board-column-title" data-status-id="4">
-//
-// <div class="card" draggable="true" data-card-id="6" data-card-status="4" data-card-order="2">
