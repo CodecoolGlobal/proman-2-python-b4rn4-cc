@@ -9,14 +9,14 @@ export let dataHandler = {
     getStatuses: async function (boardId) {
         // the statuses are retrieved and then the callback function is called with the statuses
         const response = await apiGet(`/api/statuses/${boardId}`);
-        return response
+        return response;
     },
     addStatus: async function (boardId, statusTitle) {
-        return await apiPost(`/api/statuses/${boardId}/create`, statusTitle)
+        return await apiPost(`/api/statuses/${boardId}/create`, statusTitle);
     },
-    deleteColumn: async function (statusId){
+    deleteColumn: async function (statusId) {
         const response = await apiGet(`/api/statuses/${statusId}/delete`);
-        return response
+        return response;
     },
     getStatus: async function (statusId) {
         // the status is retrieved and then the callback function is called with the status
@@ -27,8 +27,8 @@ export let dataHandler = {
     },
     getCards: async function () {
         // the card is retrieved and then the callback function is called with the card
-        const response = await apiGet('/api/cards')
-        return response
+        const response = await apiGet('/api/cards');
+        return response;
     },
     createNewBoard: async function (boardTitle) {
         // creates new board, saves it and calls the callback function with its data
@@ -36,27 +36,27 @@ export let dataHandler = {
     },
     createNewCard: async function (cardTitle, boardId, statusId, cardOrder) {
         // creates new card, saves it and calls the callback function with its data
-        const payload = {cardTitle, statusId, cardOrder}
+        const payload = {cardTitle, statusId, cardOrder};
         await apiPost(`/api/boards/${boardId}/cards/create`, payload);
     },
     updateBoardName: async function (boardId, boardTitle) {
         await apiPost(`/api/boards/${boardId}/update`, boardTitle);
     },
-    updateCardName: async function(cardId, newCardTitle) {
+    updateCardName: async function (cardId, newCardTitle) {
         await apiPost(`/api/cards/${cardId}/update`, newCardTitle);
     },
     deleteBoard: async function (boardId) {
-        await apiGet(`/api/boards/${boardId}/delete`)
+        await apiGet(`/api/boards/${boardId}/delete`);
     },
     deleteCard: async function (cardId) {
-        await apiGet(`/api/cards/${cardId}/delete`)
+        await apiGet(`/api/cards/${cardId}/delete`);
     },
     updateCardPosition: async function (cardId, cardStatusId, cardOrder) {
-        const payload = {cardStatusId: cardStatusId, cardOrder: cardOrder}
-        await apiPost(`/api/cards/${cardId}/update/position`, payload)
+        const payload = {cardStatusId: cardStatusId, cardOrder: cardOrder};
+        await apiPost(`/api/cards/${cardId}/update/position`, payload);
     },
     updateColumnName: async function (colId, boardId, columnName) {
-        await apiPut(`/api/${boardId}/columns/${colId}/update`, columnName)
+        await apiPut(`/api/${boardId}/columns/${colId}/update`, columnName);
     }
 };
 

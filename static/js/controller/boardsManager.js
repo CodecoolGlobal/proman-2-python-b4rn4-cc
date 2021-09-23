@@ -95,7 +95,7 @@ async function saveColRename(e) {
     const parent = inputField.parentElement.parentElement;
     const newTitle = inputField.value;
     const titleDiv = document.createElement("div");
-    titleDiv.dataset.type = "title"
+    titleDiv.dataset.type = "title";
     titleDiv.innerText = newTitle;
     parent.firstElementChild.remove();
     parent.insertAdjacentElement('afterbegin', titleDiv);

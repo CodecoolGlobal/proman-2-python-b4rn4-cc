@@ -23,14 +23,14 @@ export let displayRegModal = function () {
     const modal = document.getElementById("myModal");
     const regButton = document.getElementById("regButton");
     const flashMessage = document.getElementById("flashMessage");
-    const inputFields = document.getElementById("form")
+    const inputFields = document.getElementById("form");
     const inputButton = document.getElementById("inputButton");
     const logButton = document.getElementById("logButton");
     if (logButton) {
         logButton.addEventListener('click', function () {
             inputFields.setAttribute("action", "/login");
             modal.style.display = "block";
-            inputButton.innerText = "Login"
+            inputButton.innerText = "Login";
         });
     }
 
@@ -38,7 +38,7 @@ export let displayRegModal = function () {
         regButton.addEventListener('click', function () {
             inputFields.setAttribute("action", "/registration");
             modal.style.display = "block";
-            inputButton.innerText = "Create"
+            inputButton.innerText = "Create";
         });
     }
     closeButton.addEventListener('click', function () {
@@ -48,8 +48,8 @@ export let displayRegModal = function () {
         if (event.target === modal) {
             modal.style.display = "none";
         }
-    }
+    };
     if (flashMessage.firstElementChild) {
         modal.style.display = "block";
     }
-}
+};

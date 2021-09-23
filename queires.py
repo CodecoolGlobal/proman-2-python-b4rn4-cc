@@ -56,7 +56,7 @@ def create_board(board_name, user_name):
     INSERT INTO boards
     (title, user_name)
     VALUES (%(board_name)s, %(user_name)s) RETURNING id;""", {"board_name": board_name,
-                                                "user_name": user_name}, fetchall=False)
+                                                              "user_name": user_name}, fetchall=False)
 
 
 def update_board_title(board_name, board_id):
@@ -92,20 +92,6 @@ def update_card_title(card_name, card_id):
     WHERE id = %(id)s;
     """, {"new_title": card_name,
           "id": card_id})
-
-
-# def get_cards_for_board(board_id):
-#     # remove this code once you implement the database
-#
-#     matching_cards = data_manager.execute_select(
-#         """
-#         SELECT * FROM cards
-#         WHERE cards.board_id = %(board_id)s
-#         ;
-#         """
-#         , {"board_id": board_id})
-#
-#     return matching_cards
 
 
 def delete_cards_by_board(board_id):
@@ -148,7 +134,7 @@ def delete_card_by_status_id(status_id):
             WHERE status_id = %(status_id)s
         """,
         variables={"status_id": status_id}
-   )
+    )
 
 
 def list_users():
