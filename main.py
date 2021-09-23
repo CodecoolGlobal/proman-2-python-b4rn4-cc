@@ -117,7 +117,7 @@ def update_card(card_id):
     queires.update_card_title(card_name, card_id)
 
 
-@app.route('/api/boards/<int:board_id>/delete')
+@app.route('/api/boards/<int:board_id>/delete', methods=["DELETE"])
 @json_response
 def delete_board(board_id):
     queires.delete_cards_by_board(board_id)
