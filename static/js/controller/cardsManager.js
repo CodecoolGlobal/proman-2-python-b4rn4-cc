@@ -119,23 +119,27 @@ export let cardsManager = {
     columnsContainer: async function (boardId) {
         const columns = await dataHandler.getStatuses(boardId);
         for (let column of columns) {
+            const columnsContainer = `.board-columns[data-board-id="${boardId}"]`;
+            const columnIdentifier = `div.board-column div.board-column-title[data-status-id="${column.id}"]`;
+            const cardsSpace = `div.board-column-content`;
+            const targetIdentifier  = columnsContainer + ' ' + columnIdentifier + ' ' + cardsSpace;
             domManager.addEventListener(
-                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content`,
+                targetIdentifier,
                 'dragenter',
                 dragEnter
             );
             domManager.addEventListener(
-                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content`,
+                targetIdentifier,
                 'dragleave',
                 dragLeave
             );
             domManager.addEventListener(
-                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content`,
+                targetIdentifier,
                 'dragover',
                 dragOver
             );
             domManager.addEventListener(
-                `.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${column.id}"] div.board-column-content`,
+                targetIdentifier,
                 'drop',
                 drop
             );
