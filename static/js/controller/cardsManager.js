@@ -6,18 +6,25 @@ export let cardsManager = {
     loadCards: async function (boardId) {
         const cards = await dataHandler.getCardsByBoardId(boardId);
         const columns = await dataHandler.getStatuses(boardId);
+        const columnsContainer = `.board-columns[data-board-id="${boardId}"]`;
         for (let column of columns) {
             const columnBuilder = htmlFactory(htmlTemplates.column);
             const colContent = columnBuilder(column);
-            domManager.addChild(`.board-columns[data-board-id="${boardId}"`, colContent);
-            domManager.addEventListener(`.column-remove[data-status-id="${column.id}"]`, "click", async function () {
-                await columnRemove(column.id);
-            });
+            domManager.addChild(columnsContainer, colContent);
+            domManager.addEventListener(
+                `.column-remove[data-status-id="${column.id}"]`,
+                "click",
+                async function () {
+                    await columnRemove(column.id);
+                });
         }
         for (let card of cards) {
             const cardBuilder = htmlFactory(htmlTemplates.card);
             const content = cardBuilder(card);
-            domManager.addChild(`.board-columns[data-board-id="${boardId}"] div.board-column div.board-column-title[data-status-id="${card.status_id}"] div.board-column-content`, content);
+            const columnIdentifier = `div.board-column div.board-column-title[data-status-id="${card.status_id}"]`;
+            const cardSpace = `div.board-column-content`;
+            const parentIdentifier = columnsContainer + ' ' + columnIdentifier + ' ' + cardSpace;
+            domManager.addChild(parentIdentifier, content);
             domManager.addEventListener(
                 `.card[data-card-id="${card.id}"] div.card-remove`,
                 "click",
