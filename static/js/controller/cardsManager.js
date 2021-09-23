@@ -82,7 +82,10 @@ export let cardsManager = {
     renameCards: async function (boardId) {
         const cards = await dataHandler.getCardsByBoardId(boardId);
         cards.forEach((card) => {
-            domManager.addEventListener(`.card[data-card-id="${card.id}"`, "click", renameCardHandler);
+            domManager.addEventListener(
+                `.card[data-card-id="${card.id}"`,
+                "click",
+                renameCardHandler);
         });
     },
 
