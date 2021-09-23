@@ -30,6 +30,7 @@ export let boardsManager = {
         await this.saveBoardRename();
         await cardsManager.createCardsButton();
         await this.deleteBoardButton();
+        await cardsManager.createColumnButton();
     },
 
     renameBoard: async function () {
