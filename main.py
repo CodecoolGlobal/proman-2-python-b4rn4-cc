@@ -121,8 +121,8 @@ def update_card(card_id):
 @json_response
 def delete_board(board_id):
     queires.delete_cards_by_board(board_id)
-    queires.delete_board(board_id)
     queires.delete_status_by_board_id(board_id)
+    queires.delete_board(board_id)
 
 
 @app.route("/api/boards/<int:board_id>/cards/")
