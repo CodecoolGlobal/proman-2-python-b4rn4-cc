@@ -150,7 +150,7 @@ def get_cards():
     return queires.get_cards()
 
 
-@app.route('/api/cards/<card_id>/delete')
+@app.route('/api/cards/<card_id>/delete', methods=["DELETE"])
 @json_response
 def delete_card(card_id):
     queires.delete_card(card_id)

@@ -49,7 +49,7 @@ export let dataHandler = {
         await apiGet(`/api/boards/${boardId}/delete`);
     },
     deleteCard: async function (cardId) {
-        await apiGet(`/api/cards/${cardId}/delete`);
+        await apiDelete(`/api/cards/${cardId}/delete`);
     },
     updateCardPosition: async function (cardId, cardStatusId, cardOrder) {
         const payload = {cardStatusId: cardStatusId, cardOrder: cardOrder};
@@ -85,6 +85,12 @@ async function apiPost(url, payload) {
 }
 
 async function apiDelete(url) {
+    let response = await fetch(url, {
+        method: "DELETE"
+    });
+    if (response.ok) {
+        return response.json();
+    }
 }
 
 async function apiPut(url, payload) {
