@@ -1,6 +1,7 @@
 import {dataHandler} from "../data/dataHandler.js";
 import {htmlFactory, htmlTemplates} from "../view/htmlFactory.js";
 import {domManager} from "../view/domManager.js";
+import {boardsManager} from "./boardsManager.js";
 
 export let cardsManager = {
     loadCards: async function (boardId) {
@@ -70,10 +71,12 @@ export let cardsManager = {
                     await cardsManager.loadCards(boardId);
                     await cardsManager.columnsContainer(boardId);
                     await cardsManager.moveCards(boardId);
+                    await boardsManager.renameColumn();
                 } else {
                     await cardsManager.loadCards(boardId);
                     await cardsManager.columnsContainer(boardId);
                     await cardsManager.moveCards(boardId);
+                    await boardsManager.renameColumn();
                 }
             });
         }
@@ -122,7 +125,7 @@ export let cardsManager = {
             const columnsContainer = `.board-columns[data-board-id="${boardId}"]`;
             const columnIdentifier = `div.board-column div.board-column-title[data-status-id="${column.id}"]`;
             const cardsSpace = `div.board-column-content`;
-            const targetIdentifier  = columnsContainer + ' ' + columnIdentifier + ' ' + cardsSpace;
+            const targetIdentifier = columnsContainer + ' ' + columnIdentifier + ' ' + cardsSpace;
             domManager.addEventListener(
                 targetIdentifier,
                 'dragenter',
@@ -264,6 +267,7 @@ async function addColumn(clickEvent) {
     await cardsManager.loadCards(boardId);
     await cardsManager.moveCards(boardId);
     await cardsManager.columnsContainer(boardId);
+    await boardsManager.renameColumn();
 }
 
 async function reArrangePresentColumn(columnChildren) {
