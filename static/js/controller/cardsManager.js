@@ -208,7 +208,10 @@ async function saveCardRenameHandler(clickEvent) {
     card.firstElementChild.firstElementChild.remove();
     card.firstElementChild.style.display = "block";
     card.firstElementChild.innerText = newCardTitle;
-    domManager.addEventListener(`.card[data-card-id="${cardId}"]`, "click", renameCardHandler);
+    domManager.addEventListener(
+        `.card[data-card-id="${cardId}"]`,
+        "click",
+        renameCardHandler);
 }
 
 function dragOver(clickEvent) {
